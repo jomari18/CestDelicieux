@@ -2,6 +2,8 @@
 
 React + TypeScript restaurant ordering app, Supabase PostgreSQL/Auth and a Capacitor Android app. The selected **Atmospheric Supper Club** design uses charcoal, cream, burgundy, serif headings and original restaurant photography.
 
+Live web app: [cestdelicieux.netlify.app](https://cestdelicieux.netlify.app/). Netlify deploys the GitHub `main` branch. See [deployment verification](docs/deployment-verification.md).
+
 ## Run the web app
 
 Node 24+, Windows PowerShell:
@@ -31,7 +33,7 @@ Pickup: pending → accepted → preparing → ready → completed. Delivery: pe
 
 Use only the dedicated restaurant project `xjcmygnnbkdnetkdsfyq`. The owner has run the schema/seed setup, and a read-only public API check returned all 25 products. See [Supabase setup](docs/supabase-setup.md), [delivery setup](docs/delivery-setup.md), [staff grant](docs/staff-access.sql), [database contract](docs/database-contracts.md) and [hosted verification](docs/hosted-verification.md).
 
-**The `delivery-quote` function is deployed and ACTIVE with JWT verification enabled.** The owner reported saving `ORS_API_KEY`; local-origin CORS preflight passed. An authenticated live provider route still needs verification. Local route fixtures do not prove a live provider route. There is no fabricated estimate fallback.
+**The `delivery-quote` function is deployed and ACTIVE with JWT verification enabled.** The owner confirmed live road quotes and a persisted delivery order on the local web app. The deployed Netlify origin passes CORS preflight. Authenticated ordering on the deployed site and actual Android device behavior remain separate verification steps. There is no fabricated estimate fallback.
 
 ## Checks
 
