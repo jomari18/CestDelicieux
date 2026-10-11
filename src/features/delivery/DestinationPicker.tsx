@@ -55,6 +55,7 @@ export function DestinationPicker({
     ).addTo(current);
     marker.current = pin;
     function choose(p: L.LatLng) {
+      setError("");
       setLat(p.lat.toFixed(6));
       setLng(p.lng.toFixed(6));
       pin.setLatLng(p);
@@ -75,6 +76,7 @@ export function DestinationPicker({
     }
   }, [destination?.lat, destination?.lng]);
   async function locate() {
+    setError("");
     setBusy(true);
     const r = await getCurrentCoordinates();
     setBusy(false);

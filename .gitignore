@@ -15,5 +15,6 @@ android/**/build/
 *.keystore
 *.jks
 *.log
+xsmtpsib-*.txt
 
 supabase/.temp/

@@ -26,3 +26,9 @@ Unverified: dedicated hosted registration/mailbox/staff/advisors/order persisten
 Download artifacts are produced in `outputs`: source ZIP (no environment files/caches/SDK/signing key), compiled web ZIP, debug APK/checksum and audit screenshots ZIP. Source ZIP includes the reviewed schema/seed setup bundle. A debug APK is for device testing; release signing remains separate.
 
 Design differences: the selected visual direction is applied to functional React screens using original optimized photography and serif typography. Illustrative catalogue/staff content is replaced by application data. Checkout, status/history, map and staff management extend the reference to support the approved ordering flows. The original static site's cart IDs/prices are preserved in the import mapping; duplicate dishes are merged into25 unique products. The pickup location is clearly a Metro Manila demo pin.
+# Device location follow-up — 2026-10-12
+
+The owner confirmed a live manual-pin quote of PHP 50 for 0.20 km by road. Browser/device geolocation still returned the former generic unavailable message; its original failure code was not captured.
+
+The client now distinguishes browser permission denied, timeout, and unavailable positioning. Manual map selection clears the stale location warning. Four location unit regressions pass; the full suite has 71 passing tests. The browser fixture verifies denied permission, manual-pin recovery, and successful synthetic device coordinates. Production build, bundle guard, and Android debug rebuild pass. Real device geolocation remains to be verified by the owner; fixture coordinates do not establish GPS availability.
+
