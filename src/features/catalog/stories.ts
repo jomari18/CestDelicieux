@@ -1,0 +1,5 @@
+export const stories=[
+ {slug:'la-dolce-vita',title:'Indulge in La Dolce Vita: Unveiling the Authenticity of C’est Délicieux',image:'/assets/editorial-dining-room.webp',body:'Step into a world of culinary enchantment at C’est Délicieux, where the spirit of Rome meets the heart of Italy. Immerse yourself in the authentic Italian experience with dishes that capture the essence of Italian cuisine. Join us for a journey of flavours and savour the art of indulgence.'},
+ {slug:'an-italian-feast',title:'C’est Délicieux Invites You to an Italian Feast',image:'/assets/editorial-steak.webp',body:'Embark on a gastronomic adventure with C’est Délicieux, where every dish is a celebration of Italian flavours. Explore pairings of food and wine and the pleasure of sharing a meal around the table.'},
+ {slug:'the-art-of-flavour',title:'Indulge in the Art of Italian Flavor at C’est Délicieux',image:'/assets/editorial-creme-brulee.webp',body:'Discover the art of Italian cuisine at C’est Délicieux. From classic pizza to creamy risotto and pasta, the original restaurant journal celebrates food made for good company.'}
+];
