@@ -345,6 +345,7 @@ export function CheckoutPage() {
                     }
                   />
                   <DeliveryQuotePanel
+                    address={address}
                     policy={policy}
                     destination={destination}
                     onDestination={(p) => {

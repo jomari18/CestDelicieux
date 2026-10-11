@@ -1,4 +1,5 @@
 import { readFile, readdir } from "node:fs/promises";
+import { assertSafeBundle } from "./bundle-safety.ts";
 async function files(dir) {
   return (
     await Promise.all(
@@ -13,12 +14,7 @@ for (const path of await files("dist")) {
   if (/\.(js|html|css|json)$/.test(path))
     combined += await readFile(path, "utf8");
 }
-if (
-  /sb_secret_[A-Za-z0-9_-]{12,}|SUPABASE_SERVICE_ROLE_KEY|ORS_API_KEY|[A-Z]:[\\/]Users[\\/]/i.test(
-    combined,
-  )
-)
-  throw Error("Sensitive configuration or developer path found in bundle");
+assertSafeBundle(combined);
 if (
   !combined.includes("xjcmygnnbkdnetkdsfyq.supabase.co") ||
   !combined.includes("sb_publishable_")

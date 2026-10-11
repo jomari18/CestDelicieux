@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "./AuthProvider";
 import { supabase } from "../../lib/supabase";
@@ -7,15 +7,31 @@ import { StatusNotice } from "../../components/StatusNotice";
 import { normalizePhone } from "../../domain/validation";
 export function ProfilePage() {
   const auth = useAuth();
+  const initialized = useRef<{ owner: string | null; ready: boolean }>({
+    owner: null,
+    ready: false,
+  });
   const [name, setName] = useState(""),
     [phone, setPhone] = useState(""),
     [busy, setBusy] = useState(false),
     [error, setError] = useState(""),
     [notice, setNotice] = useState("");
   useEffect(() => {
-    setName(auth.profile?.displayName || "");
-    setPhone(auth.profile?.phone || "");
-  }, [auth.profile]);
+    const owner = auth.session?.user.id ?? null;
+    if (initialized.current.owner !== owner) {
+      initialized.current = { owner, ready: false };
+      setName("");
+      setPhone("");
+      setBusy(false);
+      setError("");
+      setNotice("");
+    }
+    if (auth.profile && !initialized.current.ready) {
+      initialized.current.ready = true;
+      setName(auth.profile.displayName || "");
+      setPhone(auth.profile.phone || "");
+    }
+  }, [auth.session?.user.id, auth.profile]);
   async function save(event: FormEvent) {
     event.preventDefault();
     if (!supabase || !auth.session || busy) return;
@@ -68,7 +84,10 @@ export function ProfilePage() {
           <input
             autoComplete="name"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => {
+              initialized.current.ready = true;
+              setName(e.target.value);
+            }}
             required
             minLength={2}
             maxLength={100}
@@ -80,7 +99,10 @@ export function ProfilePage() {
             type="tel"
             autoComplete="tel"
             value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            onChange={(e) => {
+              initialized.current.ready = true;
+              setPhone(e.target.value);
+            }}
             maxLength={32}
           />
         </label>

@@ -4,6 +4,7 @@ import {
   useEffect,
   useMemo,
   useState,
+  useRef,
   type ReactNode,
 } from "react";
 import type { Session } from "@supabase/supabase-js";
@@ -29,30 +30,50 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [loading, setLoading] = useState(!!supabase),
     [error, setError] = useState("");
   const scope = useMemo(() => new IdentityScope(), []);
+  const activeOwner = useRef<string | null | undefined>(undefined);
+  const refreshGeneration = useRef(0);
   async function applySession(current: Session | null) {
-    scope.change(current?.user.id ?? null);
+    const owner = current?.user.id ?? null;
+    const identityChanged = activeOwner.current !== owner;
+    activeOwner.current = owner;
+    const generation = ++refreshGeneration.current;
+    scope.change(owner);
     const epoch = scope.capture();
     setSession(current);
-    setProfile(null);
-    setAccess({ verified: false, staff: false });
+    if (identityChanged) {
+      setProfile(null);
+      setAccess({ verified: false, staff: false });
+      setLoading(!!current);
+    }
     setError("");
     if (!current || !supabase) {
       setLoading(false);
       return;
     }
-    setLoading(true);
     const [permission, details] = await Promise.all([
       rpc<{ verified: boolean; staff: boolean }>("get_my_access"),
       supabase.from("profiles").select("*").eq("id", current.user.id).single(),
     ]);
-    if (!scope.isCurrent(epoch)) return;
+    if (!scope.isCurrent(epoch) || generation !== refreshGeneration.current)
+      return;
     if (permission.ok) setAccess(permission.data);
-    else setError(permission.message);
+    else {
+      setAccess({ verified: false, staff: false });
+      setError(permission.message);
+    }
     if (details.data)
-      setProfile({
-        id: details.data.id,
-        displayName: details.data.display_name,
-        phone: details.data.phone,
+      setProfile((previous) => {
+        const next = {
+          id: details.data.id,
+          displayName: details.data.display_name,
+          phone: details.data.phone,
+        };
+        return previous &&
+          previous.id === next.id &&
+          previous.displayName === next.displayName &&
+          previous.phone === next.phone
+          ? previous
+          : next;
       });
     setLoading(false);
   }

@@ -29,3 +29,19 @@ it("keeps receipt collection separate and removes it once collected", () => {
   ).toEqual(["dispatch"]);
   expect(deriveAvailableActions({ ...order, status: "cancelled" })).toEqual([]);
 });
+it.each(["PGRST000", "FIXTURE_LOST_RESPONSE", "UNEXPECTED_TRANSPORT"])(
+  "preserves mutation identity after an unclassified transport failure %s",
+  (code) => {
+    const attempt = new MutationAttempt();
+    const original = attempt.lock({
+      kind: "product",
+      fields: { name: "Synthetic dish" },
+    });
+    expect(
+      attempt.finish({ ok: false, code, message: "Cannot confirm response" }),
+    ).toBe("retry");
+    expect(
+      attempt.lock({ kind: "product", fields: { name: "Changed dish" } }),
+    ).toEqual(original);
+  },
+);

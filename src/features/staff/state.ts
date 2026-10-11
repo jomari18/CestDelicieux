@@ -15,11 +15,22 @@ export class MutationAttempt {
       this.current = null;
       return "saved";
     }
-    if (
-      ["NETWORK_ERROR", "API_ERROR"].includes(result.code) ||
-      /^[0-9A-Z]{5}$/.test(result.code)
-    )
-      return "retry";
+    const definite = new Set([
+      "STALE_VERSION",
+      "INVALID_REQUEST",
+      "INVALID_MENU",
+      "INVALID_POLICY",
+      "INVALID_TRANSITION",
+      "INVALID_MESSAGE",
+      "NOT_FOUND",
+      "SLUG_EXISTS",
+      "STAFF_REQUIRED",
+      "VERIFICATION_REQUIRED",
+      "ACTION_CONFLICT",
+      "RATE_LIMITED",
+      "SETUP_REQUIRED",
+    ]);
+    if (!definite.has(result.code)) return "retry";
     this.current = null;
     return result.code === "STALE_VERSION" ? "reload" : "rejected";
   }

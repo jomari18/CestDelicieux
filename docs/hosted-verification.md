@@ -2,7 +2,7 @@
 
 The owner created the separate project and supplied its URL/publishable key. The current Supabase connector and cached CLI account could not manage that project; no privileged hosted writes were performed by the agent. The owner reported running the combined restaurant setup SQL.
 
-Verified read-only: active products API HTTP200, **25 products**. Public Auth settings were inspected for email provider/confirmation behavior. No hosted synthetic accounts, messages or orders were created.
+Verified read-only: active products API HTTP200, **25 products**; installed Playwright CLI displayed all25 against the live backend at1440/390 widths with images decoded and no failed Supabase requests or uncaught page errors. Public Auth settings show registration enabled, email provider enabled and automatic email confirmation disabled. No hosted synthetic accounts, messages or orders were created.
 
 Remaining integration checks:
 

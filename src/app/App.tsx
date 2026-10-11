@@ -11,15 +11,51 @@ import { LandingPage } from "../features/catalog/LandingPage";
 import { MenuPage } from "../features/catalog/MenuPage";
 import { CartPage } from "../features/cart/CartPage";
 import { StoryPage } from "../features/catalog/StoryPage";
-const CheckoutPage = lazy(() => import("../features/checkout/CheckoutPage").then(m => ({default:m.CheckoutPage})));
-const OrderHistoryPage = lazy(() => import("../features/orders/OrderHistoryPage").then(m => ({default:m.OrderHistoryPage})));
-const OrderDetailPage = lazy(() => import("../features/orders/OrderDetailPage").then(m => ({default:m.OrderDetailPage})));
-const StaffShell = lazy(() => import("../features/staff/StaffShell").then(m => ({default:m.StaffShell})));
-const StaffOrdersPage = lazy(() => import("../features/staff/StaffOrdersPage").then(m => ({default:m.StaffOrdersPage})));
-const StaffOrderDetail = lazy(() => import("../features/staff/StaffOrderDetail").then(m => ({default:m.StaffOrderDetail})));
-const StaffMenuPage = lazy(() => import("../features/staff/StaffMenuPage").then(m => ({default:m.StaffMenuPage})));
-const StaffSettingsPage = lazy(() => import("../features/staff/StaffSettingsPage").then(m => ({default:m.StaffSettingsPage})));
-const StaffMessagesPage = lazy(() => import("../features/staff/StaffMessagesPage").then(m => ({default:m.StaffMessagesPage})));
+const CheckoutPage = lazy(() =>
+  import("../features/checkout/CheckoutPage").then((m) => ({
+    default: m.CheckoutPage,
+  })),
+);
+const OrderHistoryPage = lazy(() =>
+  import("../features/orders/OrderHistoryPage").then((m) => ({
+    default: m.OrderHistoryPage,
+  })),
+);
+const OrderDetailPage = lazy(() =>
+  import("../features/orders/OrderDetailPage").then((m) => ({
+    default: m.OrderDetailPage,
+  })),
+);
+const StaffShell = lazy(() =>
+  import("../features/staff/StaffShell").then((m) => ({
+    default: m.StaffShell,
+  })),
+);
+const StaffOrdersPage = lazy(() =>
+  import("../features/staff/StaffOrdersPage").then((m) => ({
+    default: m.StaffOrdersPage,
+  })),
+);
+const StaffOrderDetail = lazy(() =>
+  import("../features/staff/StaffOrderDetail").then((m) => ({
+    default: m.StaffOrderDetail,
+  })),
+);
+const StaffMenuPage = lazy(() =>
+  import("../features/staff/StaffMenuPage").then((m) => ({
+    default: m.StaffMenuPage,
+  })),
+);
+const StaffSettingsPage = lazy(() =>
+  import("../features/staff/StaffSettingsPage").then((m) => ({
+    default: m.StaffSettingsPage,
+  })),
+);
+const StaffMessagesPage = lazy(() =>
+  import("../features/staff/StaffMessagesPage").then((m) => ({
+    default: m.StaffMessagesPage,
+  })),
+);
 import "../styles/workspace.css";
 import "../styles/global.css";
 import "../styles/restaurant.css";
@@ -45,28 +81,36 @@ export default function App() {
       <AuthProvider>
         <CatalogProvider>
           <CartProvider>
-            <Suspense fallback={<div className="page-width" role="status">Opening your workspace…</div>}><Routes>
-              <Route element={<AppShell />}>
-                <Route index element={<LandingPage />} />
-                <Route path="/menu" element={<MenuPage />} />
-                <Route path="/cart" element={<CartPage />} />
-                <Route path="/checkout" element={<CheckoutPage />} />
-                <Route path="/orders" element={<OrderHistoryPage />} />
-                <Route path="/orders/:id" element={<OrderDetailPage />} />
-                <Route path="/stories/:slug" element={<StoryPage />} />
-                <Route path="/auth" element={<AuthPage />} />
-                <Route path="/verify" element={<VerifyPage />} />
-                <Route path="/profile" element={<ProfilePage />} />
-                <Route path="/staff" element={<StaffShell />}>
-                  <Route path="orders" element={<StaffOrdersPage />} />
-                  <Route path="orders/:id" element={<StaffOrderDetail />} />
-                  <Route path="menu" element={<StaffMenuPage />} />
-                  <Route path="settings" element={<StaffSettingsPage />} />
-                  <Route path="messages" element={<StaffMessagesPage />} />
+            <Suspense
+              fallback={
+                <div className="page-width" role="status">
+                  Opening your workspace…
+                </div>
+              }
+            >
+              <Routes>
+                <Route element={<AppShell />}>
+                  <Route index element={<LandingPage />} />
+                  <Route path="/menu" element={<MenuPage />} />
+                  <Route path="/cart" element={<CartPage />} />
+                  <Route path="/checkout" element={<CheckoutPage />} />
+                  <Route path="/orders" element={<OrderHistoryPage />} />
+                  <Route path="/orders/:id" element={<OrderDetailPage />} />
+                  <Route path="/stories/:slug" element={<StoryPage />} />
+                  <Route path="/auth" element={<AuthPage />} />
+                  <Route path="/verify" element={<VerifyPage />} />
+                  <Route path="/profile" element={<ProfilePage />} />
+                  <Route path="/staff" element={<StaffShell />}>
+                    <Route path="orders" element={<StaffOrdersPage />} />
+                    <Route path="orders/:id" element={<StaffOrderDetail />} />
+                    <Route path="menu" element={<StaffMenuPage />} />
+                    <Route path="settings" element={<StaffSettingsPage />} />
+                    <Route path="messages" element={<StaffMessagesPage />} />
+                  </Route>
+                  <Route path="*" element={<PendingPage />} />
                 </Route>
-                <Route path="*" element={<PendingPage />} />
-              </Route>
-            </Routes></Suspense>
+              </Routes>
+            </Suspense>
           </CartProvider>
         </CatalogProvider>
       </AuthProvider>

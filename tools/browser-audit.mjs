@@ -9,6 +9,7 @@ for (const file of [
   "public-audit.js",
   "workflow-audit.js",
   "resilience-audit.js",
+  "review-regressions.js",
 ]) {
   const result = spawnSync(
     cli,

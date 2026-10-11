@@ -33,3 +33,12 @@ it("only known business rejections unlock a request for correction", () => {
   expect(isUncertainFailure("PRICE_CHANGED")).toBe(false);
   expect(isUncertainFailure("QUOTE_EXPIRED")).toBe(false);
 });
+it.each([
+  "INVALID_CONTACT",
+  "INVALID_FULFILLMENT",
+  "INVALID_CART",
+  "INVALID_DESTINATION",
+  "TOTAL_TOO_LARGE",
+])("unlocks the actual database rejection %s", (code) => {
+  expect(isUncertainFailure(code)).toBe(false);
+});

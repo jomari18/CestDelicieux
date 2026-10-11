@@ -16,12 +16,14 @@ export function DeliveryQuotePanel({
   onDestination,
   onQuote,
   disabled = false,
+  address = "",
 }: {
   policy: DeliveryPolicy;
   destination: Coordinates | null;
   onDestination: (p: Coordinates) => void;
   onQuote: (q: DeliveryQuote | null) => void;
   disabled?: boolean;
+  address?: string;
 }) {
   const auth = useAuth(),
     scope = useRef(new QuoteScope()),
@@ -32,13 +34,21 @@ export function DeliveryQuotePanel({
     [remaining, setRemaining] = useState(0),
     callback = useRef(onQuote);
   callback.current = onQuote;
-  const binding = `${auth.session?.user.id}:${policy.version}:${policy.enabled}:${destination?.lat}:${destination?.lng}`;
+  const binding = JSON.stringify([
+    auth.session?.user.id,
+    policy.version,
+    policy.enabled,
+    address,
+    destination?.lat,
+    destination?.lng,
+  ]);
   useEffect(() => {
     scope.current.change(binding);
     abort.current?.abort();
     setQuote(null);
     setRemaining(0);
     setBusy(false);
+    setError("");
     callback.current(null);
     return () => {
       scope.current.invalidate();

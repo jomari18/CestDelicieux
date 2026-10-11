@@ -231,6 +231,12 @@ All commands run from this nested project in PowerShell (`npm.cmd`, `npx.cmd`). 
 
 ## Self-review and execution handoff
 
+### Implementation status — 12 October 2026
+
+Local implementation, final review remediation, clean install/build, 59 unit/Edge tests, seven real PostgreSQL suites with concurrency checks, installed Playwright CLI desktop/mobile audits, and signed debug APK generation are verified. Source, web, APK and screenshot artifacts are delivered separately. The unchecked original steps remain the original plan; the authoritative execution evidence and pending boundaries are in `docs/delivery-verification.md`, `docs/final-review.md` and `AUDIT.md`.
+
+Dedicated hosted SQL was applied by the owner and public catalogue reads are verified. Hosted Auth/staff/advisors/order persistence and live ORS/function deployment remain pending because the connected management account lacks access. Physical Android installation and device behavior remain unverified because no device/emulator is attached. No hosting publication or app-store release was performed.
+
 Coverage: source/assets2/8; design/auth7; persistent cart/checkout/history4/8/10; staff/contact5/11; secure quotes/maps/failures3/6/9; Android/APK12; responsive audit13; hosted setup/delivery14. Each Review Focus condition has an owning test. Keep JSON/RPC names consistent and regenerate/check Supabase types after schema edits.
 
 Recommended: **native implementation in this chat with a fresh final reviewer**. Tasks share domain/RPC contracts and source context, so keeping implementation context together reduces coordination overhead. Subagent-driven execution with task-by-task independent reviews is available if preferred.

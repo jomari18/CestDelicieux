@@ -6,3 +6,5 @@ Deploy the `delivery-quote` folder after applying all restaurant migrations. The
 
 Before delivery is declared ready, test a real driving-car route, review its distance/fee and place an explicitly authorized staging order. Unit provider fixtures and local Postgres checks do not prove provider credentials, quota or live routes.
 
+The adapter uses the current `https://api.heigit.org/openrouteservice/v2/directions/driving-car` endpoint. [The provider's migration announcement](https://ask.openrouteservice.org/t/deprecating-api-openrouteservice-org-in-favour-of-api-heigit-org/7912) deprecates the older hostname. Copy only the API key from the provider dashboard into `ORS_API_KEY`; neither the request URL nor its sample start/end coordinates is a secret value. Regenerate a key if it was shared publicly or pasted into chat.
+

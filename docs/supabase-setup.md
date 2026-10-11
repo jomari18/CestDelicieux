@@ -29,13 +29,14 @@ Authenticate the Supabase CLI against the account that owns this project. A diff
 
 ```powershell
 npx.cmd supabase login
-npx.cmd supabase link --project-ref xjcmygnnbkdnetkdsfyq
-npx.cmd supabase functions deploy delivery-quote
+npx.cmd supabase functions deploy delivery-quote --project-ref xjcmygnnbkdnetkdsfyq --use-api
 ```
 
 Keep JWT verification enabled. In **Edge Functions → Secrets**, set `ORS_API_KEY` and `RESTAURANT_ALLOWED_ORIGINS`. Include exact deployed web origin(s), `http://127.0.0.1:5180`, `http://localhost:5180`, and native `https://localhost`. No trailing slash is needed in origins. The function uses Supabase-provided service credentials; do not send them through chat or the browser.
 
 The full function source is under `supabase/functions/delivery-quote`. Without a provider key/function deployment, delivery shows retry/pickup feedback. Pickup remains available. Review provider quotas and costs before using a paid plan.
+
+Run the commands from the `CestDelicieux` folder. Login with the account that owns that exact project; the current connected account cannot manage it. `--use-api` bundles on the server so Docker is not required. The deployment command does not rerun SQL or modify MediSched. If a key was pasted into chat, regenerate it first. Save only its value under the exact secret name `ORS_API_KEY`, not a sample request URL.
 
 ## Recovery and rollback
 
