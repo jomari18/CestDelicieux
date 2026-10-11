@@ -1,4 +1,35 @@
-import {it,expect} from 'vitest';import {CheckoutAttempt,isUncertainFailure} from '../../src/features/checkout/state';import type {OrderRequest} from '../../src/domain/contracts';
-const payload={requestId:'10000000-0000-4000-8000-000000000001',items:[{productId:'10000000-0000-4000-8000-000000000002',quantity:1}],recipient:{name:'Synthetic User',phone:'+639123456789'},expectedSubtotalCentavos:5000,fulfillment:'pickup',notes:'',address:null,destination:null,quoteId:null} as OrderRequest;
-it('locks a defensive copy of the exact request for unknown outcome retries',()=>{const attempt=new CheckoutAttempt();const first=attempt.lock(payload);payload.items[0].quantity=9;expect(attempt.lock({...payload,requestId:crypto.randomUUID()})).toEqual(first);expect(first.items[0].quantity).toBe(1);attempt.clear();expect(attempt.current).toBeNull();});
-it('only known business rejections unlock a request for correction',()=>{expect(isUncertainFailure('NETWORK_ERROR')).toBe(true);expect(isUncertainFailure('API_ERROR')).toBe(true);expect(isUncertainFailure('XX000')).toBe(true);expect(isUncertainFailure('PRICE_CHANGED')).toBe(false);expect(isUncertainFailure('QUOTE_EXPIRED')).toBe(false);});
+import { it, expect } from "vitest";
+import {
+  CheckoutAttempt,
+  isUncertainFailure,
+} from "../../src/features/checkout/state";
+import type { OrderRequest } from "../../src/domain/contracts";
+const payload = {
+  requestId: "10000000-0000-4000-8000-000000000001",
+  items: [{ productId: "10000000-0000-4000-8000-000000000002", quantity: 1 }],
+  recipient: { name: "Synthetic User", phone: "+639123456789" },
+  expectedSubtotalCentavos: 5000,
+  fulfillment: "pickup",
+  notes: "",
+  address: null,
+  destination: null,
+  quoteId: null,
+} as OrderRequest;
+it("locks a defensive copy of the exact request for unknown outcome retries", () => {
+  const attempt = new CheckoutAttempt();
+  const first = attempt.lock(payload);
+  payload.items[0].quantity = 9;
+  expect(attempt.lock({ ...payload, requestId: crypto.randomUUID() })).toEqual(
+    first,
+  );
+  expect(first.items[0].quantity).toBe(1);
+  attempt.clear();
+  expect(attempt.current).toBeNull();
+});
+it("only known business rejections unlock a request for correction", () => {
+  expect(isUncertainFailure("NETWORK_ERROR")).toBe(true);
+  expect(isUncertainFailure("API_ERROR")).toBe(true);
+  expect(isUncertainFailure("XX000")).toBe(true);
+  expect(isUncertainFailure("PRICE_CHANGED")).toBe(false);
+  expect(isUncertainFailure("QUOTE_EXPIRED")).toBe(false);
+});

@@ -6,7 +6,7 @@ const url=Deno.env.get('SUPABASE_URL')||'';
 const publicKey=key('SUPABASE_PUBLISHABLE_KEYS','SUPABASE_ANON_KEY');
 const serviceKey=key('SUPABASE_SECRET_KEYS','SUPABASE_SERVICE_ROLE_KEY');
 const providerKey=Deno.env.get('ORS_API_KEY')||'';
-const origins=(Deno.env.get('RESTAURANT_ALLOWED_ORIGINS')||'http://127.0.0.1:5180,http://localhost:5180,http://localhost').split(',').map(x=>x.trim()).filter(Boolean);
+const origins=(Deno.env.get('RESTAURANT_ALLOWED_ORIGINS')||'http://127.0.0.1:5180,http://localhost:5180,https://localhost,http://localhost').split(',').map(x=>x.trim()).filter(Boolean);
 Deno.serve(async request=>{
  const client=createClient(url,publicKey,{auth:{persistSession:false,autoRefreshToken:false}});
  const service=createClient(url,serviceKey,{auth:{persistSession:false,autoRefreshToken:false}});

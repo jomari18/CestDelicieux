@@ -1,2 +1,114 @@
-import {useState} from 'react';import {Link} from 'react-router-dom';import {useCatalog} from './CatalogProvider';import {useCart} from '../cart/CartProvider';import {formatMoney} from '../../domain/money';import {Button} from '../../components/Button';import {StatusNotice} from '../../components/StatusNotice';
-export function MenuPage(){const catalog=useCatalog(),cart=useCart(),[category,setCategory]=useState('all'),[search,setSearch]=useState(''),[notice,setNotice]=useState('');const products=catalog.products.filter(p=>(category==='all'||p.categoryId===category)&&`${p.name} ${p.description}`.toLowerCase().includes(search.toLowerCase()));return <section className="page-width content-page"><div className="page-heading"><span className="eyebrow">Crafted with care. Shared with pleasure.</span><h1>Find your favourite.</h1><p>From the first bite to the final sweet note.</p></div><div className="menu-tools"><div className="category-tabs" aria-label="Menu categories"><button className={category==='all'?'active':''} onClick={()=>setCategory('all')}>All dishes</button>{catalog.categories.map(c=><button className={category===c.id?'active':''} key={c.id} onClick={()=>setCategory(c.id)}>{c.name}</button>)}</div><label className="search-field"><span className="sr-only">Search dishes</span><input placeholder="Find something delicious…" value={search} onChange={e=>setSearch(e.target.value)}/></label></div><StatusNotice error message={catalog.error||cart.error}/><StatusNotice message={notice}/>{catalog.error&&<Button onClick={catalog.refresh}>Try again</Button>}{catalog.loading?<p className="loading">Bringing the menu to your table…</p>:!catalog.error&&(!products.length?<div className="cream-card empty-state"><h2>No dishes found.</h2><p>Try another category or search.</p></div>:<div className="product-grid">{products.map(p=><article className="product-card" key={p.id}><img src={p.imageUrl} alt={p.name} loading="lazy" width="480" height="320"/><div><span className="eyebrow">{catalog.categories.find(c=>c.id===p.categoryId)?.name}</span><h2>{p.name}</h2><p>{p.description}</p><div className="row space-between"><strong>{formatMoney(p.priceCentavos)}</strong><Button variant="outline" onClick={()=>{cart.add(p.id);setNotice(`${p.name} selected. Review Your order for quantities.`)}}>Add to order +</Button></div></div></article>)}</div>)}{cart.count>0&&<Link className="mobile-cart-bar button" to="/cart">View your order <span>{cart.count} items</span></Link>}</section>}
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { useCatalog } from "./CatalogProvider";
+import { useCart } from "../cart/CartProvider";
+import { formatMoney } from "../../domain/money";
+import { Button } from "../../components/Button";
+import { StatusNotice } from "../../components/StatusNotice";
+export function MenuPage() {
+  const catalog = useCatalog(),
+    cart = useCart(),
+    [category, setCategory] = useState("all"),
+    [search, setSearch] = useState(""),
+    [notice, setNotice] = useState("");
+  const products = catalog.products.filter(
+    (p) =>
+      (category === "all" || p.categoryId === category) &&
+      `${p.name} ${p.description}`.toLowerCase().includes(search.toLowerCase()),
+  );
+  return (
+    <section className="page-width content-page">
+      <div className="page-heading">
+        <span className="eyebrow">
+          Crafted with care. Shared with pleasure.
+        </span>
+        <h1>Find your favourite.</h1>
+        <p>From the first bite to the final sweet note.</p>
+      </div>
+      <div className="menu-tools">
+        <div className="category-tabs" aria-label="Menu categories">
+          <button
+            className={category === "all" ? "active" : ""}
+            onClick={() => setCategory("all")}
+          >
+            All dishes
+          </button>
+          {catalog.categories.map((c) => (
+            <button
+              className={category === c.id ? "active" : ""}
+              key={c.id}
+              onClick={() => setCategory(c.id)}
+            >
+              {c.name}
+            </button>
+          ))}
+        </div>
+        <label className="search-field">
+          <span className="sr-only">Search dishes</span>
+          <input
+            placeholder="Find something delicious…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </label>
+      </div>
+      <StatusNotice error message={catalog.error || cart.error} />
+      <StatusNotice message={notice} />
+      {catalog.error && <Button onClick={catalog.refresh}>Try again</Button>}
+      {catalog.loading ? (
+        <p className="loading">Bringing the menu to your table…</p>
+      ) : (
+        !catalog.error &&
+        (!products.length ? (
+          <div className="cream-card empty-state">
+            <h2>No dishes found.</h2>
+            <p>Try another category or search.</p>
+          </div>
+        ) : (
+          <div className="product-grid">
+            {products.map((p) => (
+              <article className="product-card" key={p.id}>
+                <img
+                  src={p.imageUrl}
+                  alt={p.name}
+                  loading="lazy"
+                  width="480"
+                  height="320"
+                />
+                <div>
+                  <span className="eyebrow">
+                    {
+                      catalog.categories.find((c) => c.id === p.categoryId)
+                        ?.name
+                    }
+                  </span>
+                  <h2>{p.name}</h2>
+                  <p>{p.description}</p>
+                  <div className="row space-between">
+                    <strong>{formatMoney(p.priceCentavos)}</strong>
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        cart.add(p.id);
+                        setNotice(
+                          `${p.name} selected. Review Your order for quantities.`,
+                        );
+                      }}
+                    >
+                      Add to order +
+                    </Button>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        ))
+      )}
+      {cart.count > 0 && (
+        <Link className="mobile-cart-bar button" to="/cart">
+          View your order <span>{cart.count} items</span>
+        </Link>
+      )}
+    </section>
+  );
+}

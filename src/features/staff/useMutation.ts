@@ -1,2 +1,54 @@
-import {useEffect,useMemo,useRef,useState} from 'react';import type {ApiResult} from '../../domain/contracts';import {useAuth} from '../auth/AuthProvider';import {MutationAttempt} from './state';
-export function useMutation(){const auth=useAuth(),attempt=useMemo(()=>new MutationAttempt(),[]),inFlight=useRef(false),[busy,setBusy]=useState(false),[locked,setLocked]=useState(false),[error,setError]=useState(''),[notice,setNotice]=useState('');useEffect(()=>{attempt.current=null;inFlight.current=false;setBusy(false);setLocked(false);setError('');setNotice('')},[auth.session?.user.id]);async function run<T>(request:Record<string,unknown>,send:(p:Record<string,unknown>)=>Promise<ApiResult<T>>,saved:(data:T)=>void,reload:()=>void){if(inFlight.current||!auth.staff)return;inFlight.current=true;const epoch=auth.scope.capture(),exact=attempt.lock(request);setBusy(true);setLocked(true);setError('');setNotice('');const result=await send(exact);if(!auth.scope.isCurrent(epoch))return;setBusy(false);inFlight.current=false;const disposition=attempt.finish(result);setLocked(disposition==='retry');if(result.ok){saved(result.data);setNotice('Saved.')}else{setError(disposition==='retry'?'We couldn’t confirm the save. Retry the exact action before making changes.':result.message);if(disposition==='reload')reload()}}return {busy,locked,error,notice,run}}
+import { useEffect, useMemo, useRef, useState } from "react";
+import type { ApiResult } from "../../domain/contracts";
+import { useAuth } from "../auth/AuthProvider";
+import { MutationAttempt } from "./state";
+export function useMutation() {
+  const auth = useAuth(),
+    attempt = useMemo(() => new MutationAttempt(), []),
+    inFlight = useRef(false),
+    [busy, setBusy] = useState(false),
+    [locked, setLocked] = useState(false),
+    [error, setError] = useState(""),
+    [notice, setNotice] = useState("");
+  useEffect(() => {
+    attempt.current = null;
+    inFlight.current = false;
+    setBusy(false);
+    setLocked(false);
+    setError("");
+    setNotice("");
+  }, [auth.session?.user.id]);
+  async function run<T>(
+    request: Record<string, unknown>,
+    send: (p: Record<string, unknown>) => Promise<ApiResult<T>>,
+    saved: (data: T) => void,
+    reload: () => void,
+  ) {
+    if (inFlight.current || !auth.staff) return;
+    inFlight.current = true;
+    const epoch = auth.scope.capture(),
+      exact = attempt.lock(request);
+    setBusy(true);
+    setLocked(true);
+    setError("");
+    setNotice("");
+    const result = await send(exact);
+    if (!auth.scope.isCurrent(epoch)) return;
+    setBusy(false);
+    inFlight.current = false;
+    const disposition = attempt.finish(result);
+    setLocked(disposition === "retry");
+    if (result.ok) {
+      saved(result.data);
+      setNotice("Saved.");
+    } else {
+      setError(
+        disposition === "retry"
+          ? "We couldn’t confirm the save. Retry the exact action before making changes."
+          : result.message,
+      );
+      if (disposition === "reload") reload();
+    }
+  }
+  return { busy, locked, error, notice, run };
+}

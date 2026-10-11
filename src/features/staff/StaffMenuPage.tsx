@@ -1,3 +1,260 @@
-import {useEffect,useState,type FormEvent} from 'react';import type {Product,Category} from '../../domain/contracts';import {staffCatalog,staffSaveMenu} from './api';import {useMutation} from './useMutation';import {useAuth} from '../auth/AuthProvider';import {useCatalog} from '../catalog/CatalogProvider';import {formatMoney} from '../../domain/money';import {Button} from '../../components/Button';import {Dialog} from '../../components/Dialog';import {StatusNotice} from '../../components/StatusNotice';
-type Edit={kind:'product'|'category';entry:Product|Category|null};
-export function StaffMenuPage(){const auth=useAuth(),catalog=useCatalog(),mutation=useMutation(),[products,setProducts]=useState<Product[]>([]),[categories,setCategories]=useState<Category[]>([]),[error,setError]=useState(''),[edit,setEdit]=useState<Edit|null>(null);async function load(){const epoch=auth.scope.capture(),result=await staffCatalog();if(!auth.scope.isCurrent(epoch))return;if(result.ok){setProducts(result.data.products);setCategories(result.data.categories);setError('')}else setError(result.message)}useEffect(()=>{void load()},[]);function save(e:FormEvent<HTMLFormElement>){e.preventDefault();if(!edit)return;const f=new FormData(e.currentTarget),common={name:String(f.get('name')),slug:String(f.get('slug')),active:f.get('active')==='on'},fields=edit.kind==='category'?{...common,sortOrder:Number(f.get('sortOrder'))}:{...common,categoryId:String(f.get('categoryId')),description:String(f.get('description')),imageUrl:String(f.get('imageUrl')),priceCentavos:Math.round(Number(f.get('price'))*100)};void mutation.run({kind:edit.kind,id:edit.entry?.id??null,expectedVersion:edit.entry?.version??null,fields},staffSaveMenu,()=>{setEdit(null);void load();void catalog.refresh()},()=>{setEdit(null);void load()})}const product=edit?.kind==='product'?edit.entry as Product|null:null,category=edit?.kind==='category'?edit.entry as Category|null:null;return <><div className="page-heading"><h1>A menu to fall in love with.</h1><p>Edit current dishes and categories. Previous orders keep their original prices.</p></div><StatusNotice error message={error||mutation.error}/><StatusNotice message={mutation.notice}/><div className="dialog-actions"><Button onClick={()=>setEdit({kind:'product',entry:null})}>Add dish</Button><Button variant="outline" onClick={()=>setEdit({kind:'category',entry:null})}>Add category</Button><Button variant="outline" onClick={load}>Refresh menu</Button></div><section className="cream-card staff-categories"><h2>Categories.</h2>{categories.map(c=><div className="summary-line" key={c.id}><span>{c.name} · {c.active?'Active':'Inactive'}</span><Button variant="outline" onClick={()=>setEdit({kind:'category',entry:c})}>Edit</Button></div>)}</section><div className="order-grid">{products.map(p=><article key={p.id} className="cream-card staff-product"><img src={p.imageUrl} alt="" loading="lazy"/><div><h3>{p.name}</h3><p>{formatMoney(p.priceCentavos)} · {p.active?'Active':'Inactive'}</p><Button variant="outline" onClick={()=>setEdit({kind:'product',entry:p})}>Edit dish</Button></div></article>)}</div><Dialog open={!!edit} title={edit?`${edit.entry?'Edit':'Add'} ${edit.kind==='product'?'dish':'category'}`:'Menu editor'} onClose={()=>{if(!mutation.locked)setEdit(null)}}>{edit&&<form key={edit.entry?.id??edit.kind} onSubmit={save}><fieldset disabled={mutation.locked} className="plain-fieldset"><label>Name<input name="name" defaultValue={edit.entry?.name} maxLength={100} required/></label><label>Slug<input name="slug" defaultValue={edit.entry?.slug} pattern="[a-z0-9][a-z0-9-]{0,99}" maxLength={100} required placeholder="lobster-thermidor"/></label>{edit.kind==='category'?<label>Display order<input name="sortOrder" type="number" min={0} max={999} defaultValue={category?.sortOrder??0} required/></label>:<><label>Category<select name="categoryId" defaultValue={product?.categoryId??categories[0]?.id} required>{categories.map(c=><option key={c.id} value={c.id}>{c.name} {!c.active?'(inactive)':''}</option>)}</select></label><label>Price (PHP)<input type="number" name="price" min={0} max={100000} step="0.01" defaultValue={(product?.priceCentavos??0)/100} required/></label><label>Description<textarea name="description" defaultValue={product?.description} maxLength={2000}/></label><label>Image path or HTTPS URL<input name="imageUrl" defaultValue={product?.imageUrl??'/assets/editorial-lobster.webp'} required maxLength={500} pattern="(/assets/[^ ]+|https://[^ ]+)"/></label></>}<label className="checkbox-field"><input type="checkbox" name="active" defaultChecked={edit.entry?.active??true}/>Active in public menu</label></fieldset><StatusNotice error message={mutation.error}/><div className="dialog-actions"><Button busy={mutation.busy}>{mutation.locked?'Retry same save':'Save changes'}</Button><Button type="button" variant="outline" disabled={mutation.locked} onClick={()=>setEdit(null)}>Back</Button></div></form>}</Dialog></>}
+import { useEffect, useState, type FormEvent } from "react";
+import type { Product, Category } from "../../domain/contracts";
+import { staffCatalog, staffSaveMenu } from "./api";
+import { useMutation } from "./useMutation";
+import { useAuth } from "../auth/AuthProvider";
+import { useCatalog } from "../catalog/CatalogProvider";
+import { formatMoney } from "../../domain/money";
+import { Button } from "../../components/Button";
+import { Dialog } from "../../components/Dialog";
+import { StatusNotice } from "../../components/StatusNotice";
+type Edit = { kind: "product" | "category"; entry: Product | Category | null };
+export function StaffMenuPage() {
+  const auth = useAuth(),
+    catalog = useCatalog(),
+    mutation = useMutation(),
+    [products, setProducts] = useState<Product[]>([]),
+    [categories, setCategories] = useState<Category[]>([]),
+    [error, setError] = useState(""),
+    [edit, setEdit] = useState<Edit | null>(null);
+  async function load() {
+    const epoch = auth.scope.capture(),
+      result = await staffCatalog();
+    if (!auth.scope.isCurrent(epoch)) return;
+    if (result.ok) {
+      setProducts(result.data.products);
+      setCategories(result.data.categories);
+      setError("");
+    } else setError(result.message);
+  }
+  useEffect(() => {
+    void load();
+  }, []);
+  function save(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (!edit) return;
+    const f = new FormData(e.currentTarget),
+      common = {
+        name: String(f.get("name")),
+        slug: String(f.get("slug")),
+        active: f.get("active") === "on",
+      },
+      fields =
+        edit.kind === "category"
+          ? { ...common, sortOrder: Number(f.get("sortOrder")) }
+          : {
+              ...common,
+              categoryId: String(f.get("categoryId")),
+              description: String(f.get("description")),
+              imageUrl: String(f.get("imageUrl")),
+              priceCentavos: Math.round(Number(f.get("price")) * 100),
+            };
+    void mutation.run(
+      {
+        kind: edit.kind,
+        id: edit.entry?.id ?? null,
+        expectedVersion: edit.entry?.version ?? null,
+        fields,
+      },
+      staffSaveMenu,
+      () => {
+        setEdit(null);
+        void load();
+        void catalog.refresh();
+      },
+      () => {
+        setEdit(null);
+        void load();
+      },
+    );
+  }
+  const product =
+      edit?.kind === "product" ? (edit.entry as Product | null) : null,
+    category =
+      edit?.kind === "category" ? (edit.entry as Category | null) : null;
+  return (
+    <>
+      <div className="page-heading">
+        <h1>A menu to fall in love with.</h1>
+        <p>
+          Edit current dishes and categories. Previous orders keep their
+          original prices.
+        </p>
+      </div>
+      <StatusNotice error message={error || mutation.error} />
+      <StatusNotice message={mutation.notice} />
+      <div className="dialog-actions">
+        <Button onClick={() => setEdit({ kind: "product", entry: null })}>
+          Add dish
+        </Button>
+        <Button
+          variant="outline"
+          onClick={() => setEdit({ kind: "category", entry: null })}
+        >
+          Add category
+        </Button>
+        <Button variant="outline" onClick={load}>
+          Refresh menu
+        </Button>
+      </div>
+      <section className="cream-card staff-categories">
+        <h2>Categories.</h2>
+        {categories.map((c) => (
+          <div className="summary-line" key={c.id}>
+            <span>
+              {c.name} · {c.active ? "Active" : "Inactive"}
+            </span>
+            <Button
+              variant="outline"
+              onClick={() => setEdit({ kind: "category", entry: c })}
+            >
+              Edit
+            </Button>
+          </div>
+        ))}
+      </section>
+      <div className="order-grid">
+        {products.map((p) => (
+          <article key={p.id} className="cream-card staff-product">
+            <img src={p.imageUrl} alt="" loading="lazy" />
+            <div>
+              <h3>{p.name}</h3>
+              <p>
+                {formatMoney(p.priceCentavos)} ·{" "}
+                {p.active ? "Active" : "Inactive"}
+              </p>
+              <Button
+                variant="outline"
+                onClick={() => setEdit({ kind: "product", entry: p })}
+              >
+                Edit dish
+              </Button>
+            </div>
+          </article>
+        ))}
+      </div>
+      <Dialog
+        open={!!edit}
+        title={
+          edit
+            ? `${edit.entry ? "Edit" : "Add"} ${edit.kind === "product" ? "dish" : "category"}`
+            : "Menu editor"
+        }
+        onClose={() => {
+          if (!mutation.locked) setEdit(null);
+        }}
+      >
+        {edit && (
+          <form key={edit.entry?.id ?? edit.kind} onSubmit={save}>
+            <fieldset disabled={mutation.locked} className="plain-fieldset">
+              <label>
+                Name
+                <input
+                  name="name"
+                  defaultValue={edit.entry?.name}
+                  maxLength={100}
+                  required
+                />
+              </label>
+              <label>
+                Slug
+                <input
+                  name="slug"
+                  defaultValue={edit.entry?.slug}
+                  pattern="[a-z0-9][a-z0-9-]{0,99}"
+                  maxLength={100}
+                  required
+                  placeholder="lobster-thermidor"
+                />
+              </label>
+              {edit.kind === "category" ? (
+                <label>
+                  Display order
+                  <input
+                    name="sortOrder"
+                    type="number"
+                    min={0}
+                    max={999}
+                    defaultValue={category?.sortOrder ?? 0}
+                    required
+                  />
+                </label>
+              ) : (
+                <>
+                  <label>
+                    Category
+                    <select
+                      name="categoryId"
+                      defaultValue={product?.categoryId ?? categories[0]?.id}
+                      required
+                    >
+                      {categories.map((c) => (
+                        <option key={c.id} value={c.id}>
+                          {c.name} {!c.active ? "(inactive)" : ""}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label>
+                    Price (PHP)
+                    <input
+                      type="number"
+                      name="price"
+                      min={0}
+                      max={100000}
+                      step="0.01"
+                      defaultValue={(product?.priceCentavos ?? 0) / 100}
+                      required
+                    />
+                  </label>
+                  <label>
+                    Description
+                    <textarea
+                      name="description"
+                      defaultValue={product?.description}
+                      maxLength={2000}
+                    />
+                  </label>
+                  <label>
+                    Image path or HTTPS URL
+                    <input
+                      name="imageUrl"
+                      defaultValue={
+                        product?.imageUrl ?? "/assets/editorial-lobster.webp"
+                      }
+                      required
+                      maxLength={500}
+                      pattern="(/assets/[^ ]+|https://[^ ]+)"
+                    />
+                  </label>
+                </>
+              )}
+              <label className="checkbox-field">
+                <input
+                  type="checkbox"
+                  name="active"
+                  defaultChecked={edit.entry?.active ?? true}
+                />
+                Active in public menu
+              </label>
+            </fieldset>
+            <StatusNotice error message={mutation.error} />
+            <div className="dialog-actions">
+              <Button busy={mutation.busy}>
+                {mutation.locked ? "Retry same save" : "Save changes"}
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                disabled={mutation.locked}
+                onClick={() => setEdit(null)}
+              >
+                Back
+              </Button>
+            </div>
+          </form>
+        )}
+      </Dialog>
+    </>
+  );
+}

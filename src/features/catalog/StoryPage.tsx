@@ -1,2 +1,36 @@
-import {useParams,Link} from 'react-router-dom';import {stories} from './stories';
-export function StoryPage(){const story=stories.find(s=>s.slug===useParams().slug);return <article className="page-width content-page story-article"><Link className="back-link" to="/#our-story">← The restaurant</Link>{story?<><span className="eyebrow">The original restaurant journal · June 20, 2023</span><h1>{story.title}</h1><img src={story.image} alt="Restaurant journal illustration"/><div className="cream-card"><p>{story.body}</p><p className="muted">Adapted from the supplied project’s journal. This restaurant app is a portfolio demonstration.</p><Link className="button" to="/menu">Discover the menu</Link></div></>:<><h1>Story not found.</h1><Link to="/">Back to the restaurant</Link></>}</article>}
+import { useParams, Link } from "react-router-dom";
+import { stories } from "./stories";
+export function StoryPage() {
+  const story = stories.find((s) => s.slug === useParams().slug);
+  return (
+    <article className="page-width content-page story-article">
+      <Link className="back-link" to="/#our-story">
+        ← The restaurant
+      </Link>
+      {story ? (
+        <>
+          <span className="eyebrow">
+            The original restaurant journal · June 20, 2023
+          </span>
+          <h1>{story.title}</h1>
+          <img src={story.image} alt="Restaurant journal illustration" />
+          <div className="cream-card">
+            <p>{story.body}</p>
+            <p className="muted">
+              Adapted from the supplied project’s journal. This restaurant app
+              is a portfolio demonstration.
+            </p>
+            <Link className="button" to="/menu">
+              Discover the menu
+            </Link>
+          </div>
+        </>
+      ) : (
+        <>
+          <h1>Story not found.</h1>
+          <Link to="/">Back to the restaurant</Link>
+        </>
+      )}
+    </article>
+  );
+}

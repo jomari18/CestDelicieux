@@ -1,2 +1,129 @@
-import {useEffect,useState,type FormEvent} from 'react';import {Link} from 'react-router-dom';import {staffListOrders} from './api';import {useAuth} from '../auth/AuthProvider';import type {OrderSummary,OrderFilters} from '../../domain/contracts';import {formatDate,formatMoney} from '../../domain/money';import {Button} from '../../components/Button';import {StatusNotice} from '../../components/StatusNotice';
-export function StaffOrdersPage(){const auth=useAuth(),[orders,setOrders]=useState<OrderSummary[]>([]),[filters,setFilters]=useState<OrderFilters>({}),[cursor,setCursor]=useState<string|null>(null),[busy,setBusy]=useState(false),[error,setError]=useState('');async function load(next:string|null=null,criteria=filters){setBusy(true);const epoch=auth.scope.capture(),result=await staffListOrders({...criteria,cursor:next,limit:20});if(!auth.scope.isCurrent(epoch))return;setBusy(false);if(result.ok){setOrders(previous=>next?[...previous,...result.data.items]:result.data.items);setCursor(result.data.nextCursor);setError('')}else setError(result.message)}useEffect(()=>{void load()},[]);function filter(e:FormEvent<HTMLFormElement>){e.preventDefault();const f=new FormData(e.currentTarget),next={status:String(f.get('status')),fulfillment:String(f.get('fulfillment')),search:String(f.get('search'))};setFilters(next);void load(null,next)}return <><div className="page-heading"><h1>From kitchen to table.</h1><p>Review new orders and keep every meal moving.</p></div><form className="cream-card staff-filters" onSubmit={filter}><label>Status<select name="status"><option value="">All statuses</option>{['pending','accepted','preparing','ready','out_for_delivery','completed','delivered','cancelled','rejected'].map(s=><option key={s}>{s}</option>)}</select></label><label>Fulfillment<select name="fulfillment"><option value="">Pickup & delivery</option><option value="pickup">Pickup</option><option value="delivery">Delivery</option></select></label><label>Recipient or reference<input name="search" maxLength={100} placeholder="Search orders"/></label><Button busy={busy}>Apply filters</Button></form><StatusNotice error message={error}/><div className="order-grid">{orders.map(o=><article className="cream-card history-card" key={o.id}><div className="row space-between"><span className={'badge '+o.status}>{o.status.replaceAll('_',' ')}</span><span>{o.fulfillment}</span></div><h2>{formatMoney(o.totalCentavos)}</h2><p>{formatDate(o.createdAt)} · PHT</p><p className="reference">{o.reference}</p><p>{o.paymentState==='collected'?'Payment collected':'Payment due on receipt'}</p><Link className="button outline full-width" to={`/staff/orders/${o.id}`}>Review order →</Link></article>)}</div>{!orders.length&&!busy&&!error&&<div className="cream-card empty-state"><h2>No matching orders.</h2><p>New orders will appear here.</p></div>}<div className="dialog-actions"><Button variant="outline" busy={busy} onClick={()=>load()}>Refresh orders</Button>{cursor&&<Button busy={busy} onClick={()=>load(cursor)}>Load more</Button>}</div></>}
+import { useEffect, useState, type FormEvent } from "react";
+import { Link } from "react-router-dom";
+import { staffListOrders } from "./api";
+import { useAuth } from "../auth/AuthProvider";
+import type { OrderSummary, OrderFilters } from "../../domain/contracts";
+import { formatDate, formatMoney } from "../../domain/money";
+import { Button } from "../../components/Button";
+import { StatusNotice } from "../../components/StatusNotice";
+export function StaffOrdersPage() {
+  const auth = useAuth(),
+    [orders, setOrders] = useState<OrderSummary[]>([]),
+    [filters, setFilters] = useState<OrderFilters>({}),
+    [cursor, setCursor] = useState<string | null>(null),
+    [busy, setBusy] = useState(false),
+    [error, setError] = useState("");
+  async function load(next: string | null = null, criteria = filters) {
+    setBusy(true);
+    const epoch = auth.scope.capture(),
+      result = await staffListOrders({ ...criteria, cursor: next, limit: 20 });
+    if (!auth.scope.isCurrent(epoch)) return;
+    setBusy(false);
+    if (result.ok) {
+      setOrders((previous) =>
+        next ? [...previous, ...result.data.items] : result.data.items,
+      );
+      setCursor(result.data.nextCursor);
+      setError("");
+    } else setError(result.message);
+  }
+  useEffect(() => {
+    void load();
+  }, []);
+  function filter(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const f = new FormData(e.currentTarget),
+      next = {
+        status: String(f.get("status")),
+        fulfillment: String(f.get("fulfillment")),
+        search: String(f.get("search")),
+      };
+    setFilters(next);
+    void load(null, next);
+  }
+  return (
+    <>
+      <div className="page-heading">
+        <h1>From kitchen to table.</h1>
+        <p>Review new orders and keep every meal moving.</p>
+      </div>
+      <form className="cream-card staff-filters" onSubmit={filter}>
+        <label>
+          Status
+          <select name="status">
+            <option value="">All statuses</option>
+            {[
+              "pending",
+              "accepted",
+              "preparing",
+              "ready",
+              "out_for_delivery",
+              "completed",
+              "delivered",
+              "cancelled",
+              "rejected",
+            ].map((s) => (
+              <option key={s}>{s}</option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Fulfillment
+          <select name="fulfillment">
+            <option value="">Pickup & delivery</option>
+            <option value="pickup">Pickup</option>
+            <option value="delivery">Delivery</option>
+          </select>
+        </label>
+        <label>
+          Recipient or reference
+          <input name="search" maxLength={100} placeholder="Search orders" />
+        </label>
+        <Button busy={busy}>Apply filters</Button>
+      </form>
+      <StatusNotice error message={error} />
+      <div className="order-grid">
+        {orders.map((o) => (
+          <article className="cream-card history-card" key={o.id}>
+            <div className="row space-between">
+              <span className={"badge " + o.status}>
+                {o.status.replaceAll("_", " ")}
+              </span>
+              <span>{o.fulfillment}</span>
+            </div>
+            <h2>{formatMoney(o.totalCentavos)}</h2>
+            <p>{formatDate(o.createdAt)} · PHT</p>
+            <p className="reference">{o.reference}</p>
+            <p>
+              {o.paymentState === "collected"
+                ? "Payment collected"
+                : "Payment due on receipt"}
+            </p>
+            <Link
+              className="button outline full-width"
+              to={`/staff/orders/${o.id}`}
+            >
+              Review order →
+            </Link>
+          </article>
+        ))}
+      </div>
+      {!orders.length && !busy && !error && (
+        <div className="cream-card empty-state">
+          <h2>No matching orders.</h2>
+          <p>New orders will appear here.</p>
+        </div>
+      )}
+      <div className="dialog-actions">
+        <Button variant="outline" busy={busy} onClick={() => load()}>
+          Refresh orders
+        </Button>
+        {cursor && (
+          <Button busy={busy} onClick={() => load(cursor)}>
+            Load more
+          </Button>
+        )}
+      </div>
+    </>
+  );
+}

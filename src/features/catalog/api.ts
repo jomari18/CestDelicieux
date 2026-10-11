@@ -1,4 +1,51 @@
-import {supabase} from '../../lib/supabase';
-import type {ApiResult,Product,Category} from '../../domain/contracts';
-export type Catalog={products:Product[];categories:Category[]};
-export async function listCatalog():Promise<ApiResult<Catalog>>{if(!supabase)return {ok:false,code:'SETUP_REQUIRED',message:'The menu is not connected yet. Please try again later.'};try{const [p,c]=await Promise.all([supabase.from('products').select('*').eq('active',true).order('name'),supabase.from('categories').select('*').eq('active',true).order('sort_order')]);if(p.error||c.error)throw Error();const categories=(c.data??[]).map(v=>({id:v.id,slug:v.slug,name:v.name,active:v.active,sortOrder:v.sort_order,version:v.version}));const products=(p.data??[]).filter(v=>categories.some(c=>c.id===v.category_id)).map(v=>({id:v.id,categoryId:v.category_id,slug:v.slug,name:v.name,description:v.description,imageUrl:v.image_url,priceCentavos:v.price_centavos,active:v.active,version:v.version}));return {ok:true,data:{products,categories}};}catch{return {ok:false,code:'NETWORK_ERROR',message:'We couldn’t load the menu. Check your connection and try again.'}}}
+import { supabase } from "../../lib/supabase";
+import type { ApiResult, Product, Category } from "../../domain/contracts";
+export type Catalog = { products: Product[]; categories: Category[] };
+export async function listCatalog(): Promise<ApiResult<Catalog>> {
+  if (!supabase)
+    return {
+      ok: false,
+      code: "SETUP_REQUIRED",
+      message: "The menu is not connected yet. Please try again later.",
+    };
+  try {
+    const [p, c] = await Promise.all([
+      supabase.from("products").select("*").eq("active", true).order("name"),
+      supabase
+        .from("categories")
+        .select("*")
+        .eq("active", true)
+        .order("sort_order"),
+    ]);
+    if (p.error || c.error) throw Error();
+    const categories = (c.data ?? []).map((v) => ({
+      id: v.id,
+      slug: v.slug,
+      name: v.name,
+      active: v.active,
+      sortOrder: v.sort_order,
+      version: v.version,
+    }));
+    const products = (p.data ?? [])
+      .filter((v) => categories.some((c) => c.id === v.category_id))
+      .map((v) => ({
+        id: v.id,
+        categoryId: v.category_id,
+        slug: v.slug,
+        name: v.name,
+        description: v.description,
+        imageUrl: v.image_url,
+        priceCentavos: v.price_centavos,
+        active: v.active,
+        version: v.version,
+      }));
+    return { ok: true, data: { products, categories } };
+  } catch {
+    return {
+      ok: false,
+      code: "NETWORK_ERROR",
+      message:
+        "We couldn’t load the menu. Check your connection and try again.",
+    };
+  }
+}

@@ -1,2 +1,94 @@
-import {useEffect,useState} from 'react';import type {ContactMessage} from '../../domain/contracts';import {staffMessages} from './api';import {useMutation} from './useMutation';import {useAuth} from '../auth/AuthProvider';import {rpc} from '../../lib/api';import {formatDate} from '../../domain/money';import {Button} from '../../components/Button';import {StatusNotice} from '../../components/StatusNotice';
-export function StaffMessagesPage(){const auth=useAuth(),mutation=useMutation(),[messages,setMessages]=useState<ContactMessage[]>([]),[cursor,setCursor]=useState<string|null>(null),[error,setError]=useState('');async function load(next:string|null=null){const epoch=auth.scope.capture(),result=await staffMessages(next);if(!auth.scope.isCurrent(epoch))return;if(result.ok){setMessages(previous=>next?[...previous,...result.data.items]:result.data.items);setCursor(result.data.nextCursor);setError('')}else setError(result.message)}useEffect(()=>{void load()},[]);function review(m:ContactMessage){void mutation.run({id:m.id,expectedVersion:m.version},p=>rpc<ContactMessage>('staff_review_contact',p),data=>setMessages(old=>old.map(m=>m.id===data.id?data:m)),()=>{void load()})}return <><div className="page-heading"><h1>A little conversation.</h1><p>Messages saved by verified customers. Mark them reviewed after reading.</p></div><StatusNotice error message={error||mutation.error}/><StatusNotice message={mutation.notice}/><Button variant="outline" disabled={mutation.locked} onClick={()=>load()}>Refresh inbox</Button><div className="message-list">{messages.map(m=><article className="cream-card" key={m.id}><div className="row space-between"><h3>{m.name}</h3><span className="badge">{m.reviewedAt?'Reviewed':'New'}</span></div><p className="muted">{formatDate(m.createdAt)} · PHT</p><p>{m.email}<br/>{m.phone}</p><p className="message-body">{m.message}</p>{!m.reviewedAt&&<Button busy={mutation.busy} onClick={()=>review(m)}>{mutation.locked?'Retry same review':'Mark reviewed'}</Button>}</article>)}</div>{!messages.length&&!error&&<div className="cream-card empty-state"><h2>Your inbox is quiet.</h2></div>}{cursor&&<Button disabled={mutation.locked} onClick={()=>load(cursor)}>Load more messages</Button>}</>}
+import { useEffect, useState } from "react";
+import type { ContactMessage } from "../../domain/contracts";
+import { staffMessages } from "./api";
+import { useMutation } from "./useMutation";
+import { useAuth } from "../auth/AuthProvider";
+import { rpc } from "../../lib/api";
+import { formatDate } from "../../domain/money";
+import { Button } from "../../components/Button";
+import { StatusNotice } from "../../components/StatusNotice";
+export function StaffMessagesPage() {
+  const auth = useAuth(),
+    mutation = useMutation(),
+    [messages, setMessages] = useState<ContactMessage[]>([]),
+    [cursor, setCursor] = useState<string | null>(null),
+    [error, setError] = useState("");
+  async function load(next: string | null = null) {
+    const epoch = auth.scope.capture(),
+      result = await staffMessages(next);
+    if (!auth.scope.isCurrent(epoch)) return;
+    if (result.ok) {
+      setMessages((previous) =>
+        next ? [...previous, ...result.data.items] : result.data.items,
+      );
+      setCursor(result.data.nextCursor);
+      setError("");
+    } else setError(result.message);
+  }
+  useEffect(() => {
+    void load();
+  }, []);
+  function review(m: ContactMessage) {
+    void mutation.run(
+      { id: m.id, expectedVersion: m.version },
+      (p) => rpc<ContactMessage>("staff_review_contact", p),
+      (data) =>
+        setMessages((old) => old.map((m) => (m.id === data.id ? data : m))),
+      () => {
+        void load();
+      },
+    );
+  }
+  return (
+    <>
+      <div className="page-heading">
+        <h1>A little conversation.</h1>
+        <p>
+          Messages saved by verified customers. Mark them reviewed after
+          reading.
+        </p>
+      </div>
+      <StatusNotice error message={error || mutation.error} />
+      <StatusNotice message={mutation.notice} />
+      <Button
+        variant="outline"
+        disabled={mutation.locked}
+        onClick={() => load()}
+      >
+        Refresh inbox
+      </Button>
+      <div className="message-list">
+        {messages.map((m) => (
+          <article className="cream-card" key={m.id}>
+            <div className="row space-between">
+              <h3>{m.name}</h3>
+              <span className="badge">{m.reviewedAt ? "Reviewed" : "New"}</span>
+            </div>
+            <p className="muted">{formatDate(m.createdAt)} · PHT</p>
+            <p>
+              {m.email}
+              <br />
+              {m.phone}
+            </p>
+            <p className="message-body">{m.message}</p>
+            {!m.reviewedAt && (
+              <Button busy={mutation.busy} onClick={() => review(m)}>
+                {mutation.locked ? "Retry same review" : "Mark reviewed"}
+              </Button>
+            )}
+          </article>
+        ))}
+      </div>
+      {!messages.length && !error && (
+        <div className="cream-card empty-state">
+          <h2>Your inbox is quiet.</h2>
+        </div>
+      )}
+      {cursor && (
+        <Button disabled={mutation.locked} onClick={() => load(cursor)}>
+          Load more messages
+        </Button>
+      )}
+    </>
+  );
+}

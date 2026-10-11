@@ -1,3 +1,31 @@
-import {it,expect} from 'vitest';import {MutationAttempt} from '../../src/features/staff/state';import {deriveAvailableActions} from '../../src/domain/workflow';import type {OrderDetail} from '../../src/domain/contracts';
-it('reuses the exact mutation after a lost response and requires a refresh after stale version',()=>{const attempt=new MutationAttempt();const first=attempt.lock({expectedVersion:1,action:'collect_payment'});expect(attempt.lock({expectedVersion:2,action:'accept'})).toEqual(first);expect(attempt.finish({ok:false,code:'NETWORK_ERROR',message:'offline'})).toBe('retry');expect(attempt.finish({ok:false,code:'STALE_VERSION',message:'reload'})).toBe('reload');expect(attempt.current).toBeNull();});
-it('keeps receipt collection separate and removes it once collected',()=>{const order={status:'ready',fulfillment:'delivery',paymentState:'unpaid'} as OrderDetail;expect(deriveAvailableActions(order)).toEqual(['dispatch','collect_payment']);expect(deriveAvailableActions({...order,paymentState:'collected'})).toEqual(['dispatch']);expect(deriveAvailableActions({...order,status:'cancelled'})).toEqual([]);});
+import { it, expect } from "vitest";
+import { MutationAttempt } from "../../src/features/staff/state";
+import { deriveAvailableActions } from "../../src/domain/workflow";
+import type { OrderDetail } from "../../src/domain/contracts";
+it("reuses the exact mutation after a lost response and requires a refresh after stale version", () => {
+  const attempt = new MutationAttempt();
+  const first = attempt.lock({ expectedVersion: 1, action: "collect_payment" });
+  expect(attempt.lock({ expectedVersion: 2, action: "accept" })).toEqual(first);
+  expect(
+    attempt.finish({ ok: false, code: "NETWORK_ERROR", message: "offline" }),
+  ).toBe("retry");
+  expect(
+    attempt.finish({ ok: false, code: "STALE_VERSION", message: "reload" }),
+  ).toBe("reload");
+  expect(attempt.current).toBeNull();
+});
+it("keeps receipt collection separate and removes it once collected", () => {
+  const order = {
+    status: "ready",
+    fulfillment: "delivery",
+    paymentState: "unpaid",
+  } as OrderDetail;
+  expect(deriveAvailableActions(order)).toEqual([
+    "dispatch",
+    "collect_payment",
+  ]);
+  expect(
+    deriveAvailableActions({ ...order, paymentState: "collected" }),
+  ).toEqual(["dispatch"]);
+  expect(deriveAvailableActions({ ...order, status: "cancelled" })).toEqual([]);
+});
