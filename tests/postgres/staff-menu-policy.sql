@@ -1,0 +1,21 @@
+begin;
+do $$declare req jsonb;res jsonb;category jsonb;product jsonb;policy jsonb;begin
+ perform set_config('request.jwt.claim.sub','10000000-0000-4000-8000-000000000001',true);
+ perform public.test_assert(public.staff_get_catalog()->>'code'='STAFF_REQUIRED','staff catalog denied to customers');
+ perform set_config('request.jwt.claim.sub','10000000-0000-4000-8000-000000000003',true);
+ req:=jsonb_build_object('kind','category','id',null,'actionId',gen_random_uuid(),'expectedVersion',null,'fields',jsonb_build_object('name','Synthetic Category','slug','synthetic-category','active',true,'sortOrder',9));
+ res:=public.staff_save_menu(req);perform public.test_assert((res->>'ok')::boolean,'category create');category:=res->'data';
+ perform public.test_assert(public.staff_save_menu(req)=res,'menu creation retry idempotent');
+ req:=jsonb_build_object('kind','product','id',null,'actionId',gen_random_uuid(),'expectedVersion',null,'fields',jsonb_build_object('name','Synthetic Dish','slug','synthetic-dish','categoryId',category->>'id','imageUrl','/assets/editorial-steak.webp','description','Synthetic only','priceCentavos',10000,'active',true));
+ res:=public.staff_save_menu(req);perform public.test_assert((res->>'ok')::boolean,'product create');product:=res->'data';
+ req:=jsonb_build_object('kind','product','id',product->>'id','actionId',gen_random_uuid(),'expectedVersion',1,'fields',jsonb_build_object('active',false));
+ res:=public.staff_save_menu(req);perform public.test_assert((res->'data'->>'active')::boolean=false,'product deactivate not delete');
+ res:=public.staff_save_menu(req||jsonb_build_object('actionId',gen_random_uuid()));perform public.test_assert(res->>'code'='STALE_VERSION','stale menu version denied');
+ policy:=restaurant_private.policy_json();
+ req:=jsonb_build_object('actionId',gen_random_uuid(),'expectedVersion',1,'fields',policy-'version');
+ res:=public.staff_save_policy(req);perform public.test_assert((res->'data'->>'version')::int=2,'policy version increments');
+ perform public.test_assert(public.staff_save_policy(req)=res,'policy retry idempotent');
+ res:=public.staff_save_policy(req||jsonb_build_object('actionId',gen_random_uuid()));perform public.test_assert(res->>'code'='STALE_VERSION','stale policy denied');
+ res:=public.staff_save_policy(jsonb_set(req||jsonb_build_object('actionId',gen_random_uuid(),'expectedVersion',2),'{fields,perKmCentavos}','-1'));perform public.test_assert(res->>'code'='INVALID_POLICY','negative rate denied');
+end$$;
+rollback;
