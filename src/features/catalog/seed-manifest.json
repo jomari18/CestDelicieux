@@ -1,0 +1,321 @@
+{
+  "categories": [
+    {
+      "id": "cc2726b7-8fc2-518f-a343-0d4ff8748ab6",
+      "slug": "starters",
+      "name": "Starters",
+      "active": true,
+      "sortOrder": 0,
+      "version": 1
+    },
+    {
+      "id": "6fb1292e-c8bc-505f-924d-b3d77f303d48",
+      "slug": "mains",
+      "name": "Mains",
+      "active": true,
+      "sortOrder": 1,
+      "version": 1
+    },
+    {
+      "id": "3e7c5da3-0ebc-570b-9227-ef8bcd10a09b",
+      "slug": "vegetables",
+      "name": "Vegetables",
+      "active": true,
+      "sortOrder": 2,
+      "version": 1
+    },
+    {
+      "id": "e0d423d3-aa16-55f7-b16d-15074820b866",
+      "slug": "desserts",
+      "name": "Desserts",
+      "active": true,
+      "sortOrder": 3,
+      "version": 1
+    },
+    {
+      "id": "b4d144b4-5c77-5bf4-aa01-5f7d7b9cd3ca",
+      "slug": "drinks",
+      "name": "Drinks",
+      "active": true,
+      "sortOrder": 4,
+      "version": 1
+    }
+  ],
+  "products": [
+    {
+      "id": "d9d884a5-15b3-584a-9344-5d9be7692334",
+      "categoryId": "cc2726b7-8fc2-518f-a343-0d4ff8748ab6",
+      "slug": "shrimp-remoulade-shrimp-cocktail",
+      "name": "Shrimp Remoulade Shrimp Cocktail",
+      "description": "A selection from our starters menu.",
+      "imageUrl": "/assets/shrimp-remoulade-shrimp-cocktail-960.webp",
+      "priceCentavos": 159900,
+      "active": true,
+      "version": 1
+    },
+    {
+      "id": "38996133-88cc-51ce-9370-fb92a1d8804a",
+      "categoryId": "cc2726b7-8fc2-518f-a343-0d4ff8748ab6",
+      "slug": "spicy-lobster",
+      "name": "Spicy Lobster",
+      "description": "A selection from our starters menu.",
+      "imageUrl": "/assets/spicy-lobster-960.webp",
+      "priceCentavos": 169900,
+      "active": true,
+      "version": 1
+    },
+    {
+      "id": "fa0d571d-c3fe-573e-a2a6-54adaf0716df",
+      "categoryId": "cc2726b7-8fc2-518f-a343-0d4ff8748ab6",
+      "slug": "baked-escargot",
+      "name": "Baked Escargot",
+      "description": "A selection from our starters menu.",
+      "imageUrl": "/assets/baked-escargot-960.webp",
+      "priceCentavos": 222000,
+      "active": true,
+      "version": 1
+    },
+    {
+      "id": "bee75a0d-6609-5dc6-9596-c3087a0027fa",
+      "categoryId": "cc2726b7-8fc2-518f-a343-0d4ff8748ab6",
+      "slug": "seared-ahi-tuna",
+      "name": "Seared Ahi Tuna",
+      "description": "A selection from our starters menu.",
+      "imageUrl": "/assets/seared-ahi-tuna-960.webp",
+      "priceCentavos": 150000,
+      "active": true,
+      "version": 1
+    },
+    {
+      "id": "9e18298c-d434-5bb0-8f9b-0046634a9d1c",
+      "categoryId": "cc2726b7-8fc2-518f-a343-0d4ff8748ab6",
+      "slug": "prosciutto-wrapped-mozzarella",
+      "name": "Prosciutto Wrapped Mozzarella",
+      "description": "A selection from our starters menu.",
+      "imageUrl": "/assets/prosciutto-wrapped-mozzarella-960.webp",
+      "priceCentavos": 150000,
+      "active": true,
+      "version": 1
+    },
+    {
+      "id": "5ef86faf-b566-5d0f-bba1-3388f679087b",
+      "categoryId": "cc2726b7-8fc2-518f-a343-0d4ff8748ab6",
+      "slug": "caesar-salad-with-bacon-bits",
+      "name": "Caesar Salad with Bacon Bits",
+      "description": "A selection from our starters menu.",
+      "imageUrl": "/assets/caesar-salad-with-bacon-bits-960.webp",
+      "priceCentavos": 150000,
+      "active": true,
+      "version": 1
+    },
+    {
+      "id": "30896863-32f3-5635-9466-9aefec68dd8f",
+      "categoryId": "cc2726b7-8fc2-518f-a343-0d4ff8748ab6",
+      "slug": "caribbean-chicken-salad",
+      "name": "Caribbean Chicken Salad",
+      "description": "A selection from our starters menu.",
+      "imageUrl": "/assets/caribbean-chicken-salad-960.webp",
+      "priceCentavos": 150000,
+      "active": true,
+      "version": 1
+    },
+    {
+      "id": "d18f69be-88eb-5c9d-8629-c3c7dee2dc01",
+      "categoryId": "3e7c5da3-0ebc-570b-9227-ef8bcd10a09b",
+      "slug": "artichauts-a-la-barigoule",
+      "name": "Artichauts à la barigoule",
+      "description": "A selection from our vegetables menu.",
+      "imageUrl": "/assets/artichauts-a-la-barigoule-960.webp",
+      "priceCentavos": 150000,
+      "active": true,
+      "version": 1
+    },
+    {
+      "id": "79c7f103-0fb4-5bc7-8103-1940975806f1",
+      "categoryId": "6fb1292e-c8bc-505f-924d-b3d77f303d48",
+      "slug": "beef-bourguigon",
+      "name": "Beef Bourguigon",
+      "description": "A selection from our mains menu.",
+      "imageUrl": "/assets/beef-bourguigon-960.webp",
+      "priceCentavos": 150000,
+      "active": true,
+      "version": 1
+    },
+    {
+      "id": "0b12f4f3-e89f-5930-99d0-e2fff23b0b6b",
+      "categoryId": "3e7c5da3-0ebc-570b-9227-ef8bcd10a09b",
+      "slug": "sauteed-garlic-butter-mixed-vegetables",
+      "name": "Sautéed Garlic Butter Mixed Vegetables",
+      "description": "A selection from our vegetables menu.",
+      "imageUrl": "/assets/sauteed-garlic-butter-mixed-vegetables-960.webp",
+      "priceCentavos": 150000,
+      "active": true,
+      "version": 1
+    },
+    {
+      "id": "a4634792-4f6e-5ca8-8095-4fe97ed9747d",
+      "categoryId": "3e7c5da3-0ebc-570b-9227-ef8bcd10a09b",
+      "slug": "ratatouille",
+      "name": "Ratatouille",
+      "description": "A selection from our vegetables menu.",
+      "imageUrl": "/assets/ratatouille-960.webp",
+      "priceCentavos": 150000,
+      "active": true,
+      "version": 1
+    },
+    {
+      "id": "3084bcee-b61f-56a1-84ab-7de948d985ab",
+      "categoryId": "6fb1292e-c8bc-505f-924d-b3d77f303d48",
+      "slug": "steak-au-poivre-with-red-wine-pan-sauce",
+      "name": "Steak au Poivre with Red Wine Pan Sauce",
+      "description": "A selection from our mains menu.",
+      "imageUrl": "/assets/steak-au-poivre-with-red-wine-pan-sauce-960.webp",
+      "priceCentavos": 150000,
+      "active": true,
+      "version": 1
+    },
+    {
+      "id": "8a5a1a8f-7352-5ff1-9461-65385d75e66a",
+      "categoryId": "6fb1292e-c8bc-505f-924d-b3d77f303d48",
+      "slug": "duck-a-l-orange",
+      "name": "Duck à l’Orange",
+      "description": "A selection from our mains menu.",
+      "imageUrl": "/assets/duck-a-l-orange-960.webp",
+      "priceCentavos": 150000,
+      "active": true,
+      "version": 1
+    },
+    {
+      "id": "e7766c83-7ead-55bb-a49d-b08c5d55fbd9",
+      "categoryId": "6fb1292e-c8bc-505f-924d-b3d77f303d48",
+      "slug": "lyon-style-chicken-with-vinegar-sauce",
+      "name": "Lyon-Style Chicken with Vinegar Sauce",
+      "description": "A selection from our mains menu.",
+      "imageUrl": "/assets/lyon-style-chicken-with-vinegar-sauce-960.webp",
+      "priceCentavos": 150000,
+      "active": true,
+      "version": 1
+    },
+    {
+      "id": "39da1cda-413a-55b2-a6b8-e56b4bb274d9",
+      "categoryId": "6fb1292e-c8bc-505f-924d-b3d77f303d48",
+      "slug": "stuffed-pork-tenderloins-with-bacon-and-apple-riesling-sauce",
+      "name": "Stuffed Pork Tenderloins with Bacon and Apple-Riesling Sauce",
+      "description": "A selection from our mains menu.",
+      "imageUrl": "/assets/stuffed-pork-tenderloins-with-bacon-and-apple-riesling-sauce-960.webp",
+      "priceCentavos": 150000,
+      "active": true,
+      "version": 1
+    },
+    {
+      "id": "1008e68d-228a-5756-8823-e0108c50b71b",
+      "categoryId": "6fb1292e-c8bc-505f-924d-b3d77f303d48",
+      "slug": "lobster-thermidor",
+      "name": "Lobster Thermidor",
+      "description": "A selection from our mains menu.",
+      "imageUrl": "/assets/lobster-thermidor-960.webp",
+      "priceCentavos": 150000,
+      "active": true,
+      "version": 1
+    },
+    {
+      "id": "c1088261-9060-5708-a558-b971cbfb926e",
+      "categoryId": "6fb1292e-c8bc-505f-924d-b3d77f303d48",
+      "slug": "marseille-style-shrimp-stew",
+      "name": "Marseille-Style Shrimp Stew",
+      "description": "A selection from our mains menu.",
+      "imageUrl": "/assets/marseille-style-shrimp-stew-960.webp",
+      "priceCentavos": 150000,
+      "active": true,
+      "version": 1
+    },
+    {
+      "id": "c7283d58-d4fb-5d4b-9bd1-cf00c5355a5c",
+      "categoryId": "6fb1292e-c8bc-505f-924d-b3d77f303d48",
+      "slug": "moules-farcies",
+      "name": "Moules Farcies",
+      "description": "A selection from our mains menu.",
+      "imageUrl": "/assets/moules-farcies-960.webp",
+      "priceCentavos": 150000,
+      "active": true,
+      "version": 1
+    },
+    {
+      "id": "6636611a-b407-5071-862e-2170c7a4be7c",
+      "categoryId": "3e7c5da3-0ebc-570b-9227-ef8bcd10a09b",
+      "slug": "endives-au-jambon",
+      "name": "Endives au jambon",
+      "description": "A selection from our vegetables menu.",
+      "imageUrl": "/assets/endives-au-jambon-960.webp",
+      "priceCentavos": 150000,
+      "active": true,
+      "version": 1
+    },
+    {
+      "id": "b813f388-84b7-518a-a8e0-709da0e092f7",
+      "categoryId": "e0d423d3-aa16-55f7-b16d-15074820b866",
+      "slug": "mocha-mud-pie",
+      "name": "Mocha Mud Pie",
+      "description": "A selection from our desserts menu.",
+      "imageUrl": "/assets/mocha-mud-pie-960.webp",
+      "priceCentavos": 150000,
+      "active": true,
+      "version": 1
+    },
+    {
+      "id": "0117637a-abd8-5c21-9f52-42794937f5d8",
+      "categoryId": "e0d423d3-aa16-55f7-b16d-15074820b866",
+      "slug": "creme-brulee",
+      "name": "CRÈME BRULÉE",
+      "description": "A selection from our desserts menu.",
+      "imageUrl": "/assets/creme-brulee-960.webp",
+      "priceCentavos": 150000,
+      "active": true,
+      "version": 1
+    },
+    {
+      "id": "957d7297-861b-5c0d-a04d-f8e2a205f6f3",
+      "categoryId": "b4d144b4-5c77-5bf4-aa01-5f7d7b9cd3ca",
+      "slug": "lemonade",
+      "name": "Lemonade",
+      "description": "A selection from our drinks menu.",
+      "imageUrl": "/assets/lemonade-960.webp",
+      "priceCentavos": 15000,
+      "active": true,
+      "version": 1
+    },
+    {
+      "id": "1f592495-ae02-54a9-acc1-09a75a1e552f",
+      "categoryId": "b4d144b4-5c77-5bf4-aa01-5f7d7b9cd3ca",
+      "slug": "the-glace-iced-tea",
+      "name": "Thé glacé(iced tea)",
+      "description": "A selection from our drinks menu.",
+      "imageUrl": "/assets/the-glace-iced-tea-960.webp",
+      "priceCentavos": 15000,
+      "active": true,
+      "version": 1
+    },
+    {
+      "id": "7b083516-4cdb-5d50-8beb-0ec2fcbe5b37",
+      "categoryId": "b4d144b4-5c77-5bf4-aa01-5f7d7b9cd3ca",
+      "slug": "fresh-buko",
+      "name": "fresh buko",
+      "description": "A selection from our drinks menu.",
+      "imageUrl": "/assets/fresh-buko-960.webp",
+      "priceCentavos": 15000,
+      "active": true,
+      "version": 1
+    },
+    {
+      "id": "e53b4795-e914-5ebd-93e2-69177b13e764",
+      "categoryId": "b4d144b4-5c77-5bf4-aa01-5f7d7b9cd3ca",
+      "slug": "calamansi-juice",
+      "name": "calamansi juice",
+      "description": "A selection from our drinks menu.",
+      "imageUrl": "/assets/calamansi-juice-960.webp",
+      "priceCentavos": 15000,
+      "active": true,
+      "version": 1
+    }
+  ]
+}

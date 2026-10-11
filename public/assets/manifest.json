@@ -1,0 +1,387 @@
+[
+  {
+    "source": "source/CC104-finalproj-main/Shrimp Remoulade_Shrimp Cocktail.png",
+    "output": "/assets/shrimp-remoulade-shrimp-cocktail-960.webp",
+    "width": 960,
+    "height": 960,
+    "bytes": 93640
+  },
+  {
+    "source": "source/CC104-finalproj-main/Shrimp Remoulade_Shrimp Cocktail.png",
+    "output": "/assets/shrimp-remoulade-shrimp-cocktail-480.webp",
+    "width": 480,
+    "height": 480,
+    "bytes": 38644
+  },
+  {
+    "source": "source/CC104-finalproj-main/Spicy Lobster.png",
+    "output": "/assets/spicy-lobster-960.webp",
+    "width": 960,
+    "height": 960,
+    "bytes": 143008
+  },
+  {
+    "source": "source/CC104-finalproj-main/Spicy Lobster.png",
+    "output": "/assets/spicy-lobster-480.webp",
+    "width": 480,
+    "height": 480,
+    "bytes": 48408
+  },
+  {
+    "source": "source/CC104-finalproj-main/Baked Escargot.png",
+    "output": "/assets/baked-escargot-960.webp",
+    "width": 960,
+    "height": 960,
+    "bytes": 140134
+  },
+  {
+    "source": "source/CC104-finalproj-main/Baked Escargot.png",
+    "output": "/assets/baked-escargot-480.webp",
+    "width": 480,
+    "height": 480,
+    "bytes": 41440
+  },
+  {
+    "source": "source/CC104-finalproj-main/Seared Ahi Tuna.png",
+    "output": "/assets/seared-ahi-tuna-960.webp",
+    "width": 960,
+    "height": 960,
+    "bytes": 83772
+  },
+  {
+    "source": "source/CC104-finalproj-main/Seared Ahi Tuna.png",
+    "output": "/assets/seared-ahi-tuna-480.webp",
+    "width": 480,
+    "height": 480,
+    "bytes": 36244
+  },
+  {
+    "source": "source/CC104-finalproj-main/Prosciutto Wrapped Mozzarella.png",
+    "output": "/assets/prosciutto-wrapped-mozzarella-960.webp",
+    "width": 960,
+    "height": 960,
+    "bytes": 107052
+  },
+  {
+    "source": "source/CC104-finalproj-main/Prosciutto Wrapped Mozzarella.png",
+    "output": "/assets/prosciutto-wrapped-mozzarella-480.webp",
+    "width": 480,
+    "height": 480,
+    "bytes": 39758
+  },
+  {
+    "source": "source/CC104-finalproj-main/Caesar Salad with Bacon Bits.png",
+    "output": "/assets/caesar-salad-with-bacon-bits-960.webp",
+    "width": 960,
+    "height": 960,
+    "bytes": 56096
+  },
+  {
+    "source": "source/CC104-finalproj-main/Caesar Salad with Bacon Bits.png",
+    "output": "/assets/caesar-salad-with-bacon-bits-480.webp",
+    "width": 480,
+    "height": 480,
+    "bytes": 25424
+  },
+  {
+    "source": "source/CC104-finalproj-main/Caribbean Chicken Salad.png",
+    "output": "/assets/caribbean-chicken-salad-960.webp",
+    "width": 960,
+    "height": 960,
+    "bytes": 92384
+  },
+  {
+    "source": "source/CC104-finalproj-main/Caribbean Chicken Salad.png",
+    "output": "/assets/caribbean-chicken-salad-480.webp",
+    "width": 480,
+    "height": 480,
+    "bytes": 40000
+  },
+  {
+    "source": "source/CC104-finalproj-main/Artichauts à la barigoule.png",
+    "output": "/assets/artichauts-a-la-barigoule-960.webp",
+    "width": 960,
+    "height": 960,
+    "bytes": 49644
+  },
+  {
+    "source": "source/CC104-finalproj-main/Artichauts à la barigoule.png",
+    "output": "/assets/artichauts-a-la-barigoule-480.webp",
+    "width": 480,
+    "height": 480,
+    "bytes": 22444
+  },
+  {
+    "source": "source/CC104-finalproj-main/Beef Bourguigon.png",
+    "output": "/assets/beef-bourguigon-960.webp",
+    "width": 960,
+    "height": 960,
+    "bytes": 79496
+  },
+  {
+    "source": "source/CC104-finalproj-main/Beef Bourguigon.png",
+    "output": "/assets/beef-bourguigon-480.webp",
+    "width": 480,
+    "height": 480,
+    "bytes": 31982
+  },
+  {
+    "source": "source/CC104-finalproj-main/Sautéed Garlic Butter Mixed Vegetables.png",
+    "output": "/assets/sauteed-garlic-butter-mixed-vegetables-960.webp",
+    "width": 960,
+    "height": 960,
+    "bytes": 67694
+  },
+  {
+    "source": "source/CC104-finalproj-main/Sautéed Garlic Butter Mixed Vegetables.png",
+    "output": "/assets/sauteed-garlic-butter-mixed-vegetables-480.webp",
+    "width": 480,
+    "height": 480,
+    "bytes": 31632
+  },
+  {
+    "source": "source/CC104-finalproj-main/Ratatouille.png",
+    "output": "/assets/ratatouille-960.webp",
+    "width": 960,
+    "height": 960,
+    "bytes": 127988
+  },
+  {
+    "source": "source/CC104-finalproj-main/Ratatouille.png",
+    "output": "/assets/ratatouille-480.webp",
+    "width": 480,
+    "height": 480,
+    "bytes": 49458
+  },
+  {
+    "source": "source/CC104-finalproj-main/Steak au Poivre with Red Wine Pan Sauce.png",
+    "output": "/assets/steak-au-poivre-with-red-wine-pan-sauce-960.webp",
+    "width": 960,
+    "height": 960,
+    "bytes": 77098
+  },
+  {
+    "source": "source/CC104-finalproj-main/Steak au Poivre with Red Wine Pan Sauce.png",
+    "output": "/assets/steak-au-poivre-with-red-wine-pan-sauce-480.webp",
+    "width": 480,
+    "height": 480,
+    "bytes": 26280
+  },
+  {
+    "source": "source/CC104-finalproj-main/Duck à l_Orange.png",
+    "output": "/assets/duck-a-l-orange-960.webp",
+    "width": 960,
+    "height": 960,
+    "bytes": 60844
+  },
+  {
+    "source": "source/CC104-finalproj-main/Duck à l_Orange.png",
+    "output": "/assets/duck-a-l-orange-480.webp",
+    "width": 480,
+    "height": 480,
+    "bytes": 25036
+  },
+  {
+    "source": "source/CC104-finalproj-main/Lyon-Style Chicken with Vinegar Sauce.png",
+    "output": "/assets/lyon-style-chicken-with-vinegar-sauce-960.webp",
+    "width": 960,
+    "height": 960,
+    "bytes": 54582
+  },
+  {
+    "source": "source/CC104-finalproj-main/Lyon-Style Chicken with Vinegar Sauce.png",
+    "output": "/assets/lyon-style-chicken-with-vinegar-sauce-480.webp",
+    "width": 480,
+    "height": 480,
+    "bytes": 24344
+  },
+  {
+    "source": "source/CC104-finalproj-main/Stuffed Pork Tenderloins with Bacon and Apple-Riesling Sauce.png",
+    "output": "/assets/stuffed-pork-tenderloins-with-bacon-and-apple-riesling-sauce-960.webp",
+    "width": 960,
+    "height": 960,
+    "bytes": 95078
+  },
+  {
+    "source": "source/CC104-finalproj-main/Stuffed Pork Tenderloins with Bacon and Apple-Riesling Sauce.png",
+    "output": "/assets/stuffed-pork-tenderloins-with-bacon-and-apple-riesling-sauce-480.webp",
+    "width": 480,
+    "height": 480,
+    "bytes": 33848
+  },
+  {
+    "source": "source/CC104-finalproj-main/Lobster Thermidor.png",
+    "output": "/assets/lobster-thermidor-960.webp",
+    "width": 960,
+    "height": 960,
+    "bytes": 148618
+  },
+  {
+    "source": "source/CC104-finalproj-main/Lobster Thermidor.png",
+    "output": "/assets/lobster-thermidor-480.webp",
+    "width": 480,
+    "height": 480,
+    "bytes": 51648
+  },
+  {
+    "source": "source/CC104-finalproj-main/Marseille-Style Shrimp Stew.png",
+    "output": "/assets/marseille-style-shrimp-stew-960.webp",
+    "width": 960,
+    "height": 960,
+    "bytes": 68326
+  },
+  {
+    "source": "source/CC104-finalproj-main/Marseille-Style Shrimp Stew.png",
+    "output": "/assets/marseille-style-shrimp-stew-480.webp",
+    "width": 480,
+    "height": 480,
+    "bytes": 29604
+  },
+  {
+    "source": "source/CC104-finalproj-main/Moules Farcies.png",
+    "output": "/assets/moules-farcies-960.webp",
+    "width": 960,
+    "height": 960,
+    "bytes": 45858
+  },
+  {
+    "source": "source/CC104-finalproj-main/Moules Farcies.png",
+    "output": "/assets/moules-farcies-480.webp",
+    "width": 480,
+    "height": 480,
+    "bytes": 20946
+  },
+  {
+    "source": "source/CC104-finalproj-main/Endives au jambon.png",
+    "output": "/assets/endives-au-jambon-960.webp",
+    "width": 960,
+    "height": 960,
+    "bytes": 80750
+  },
+  {
+    "source": "source/CC104-finalproj-main/Endives au jambon.png",
+    "output": "/assets/endives-au-jambon-480.webp",
+    "width": 480,
+    "height": 480,
+    "bytes": 28278
+  },
+  {
+    "source": "source/CC104-finalproj-main/Mocha Mud Pie.png",
+    "output": "/assets/mocha-mud-pie-960.webp",
+    "width": 960,
+    "height": 960,
+    "bytes": 54912
+  },
+  {
+    "source": "source/CC104-finalproj-main/Mocha Mud Pie.png",
+    "output": "/assets/mocha-mud-pie-480.webp",
+    "width": 480,
+    "height": 480,
+    "bytes": 22132
+  },
+  {
+    "source": "source/CC104-finalproj-main/CRÈME BRULÉE.png",
+    "output": "/assets/creme-brulee-960.webp",
+    "width": 960,
+    "height": 960,
+    "bytes": 24912
+  },
+  {
+    "source": "source/CC104-finalproj-main/CRÈME BRULÉE.png",
+    "output": "/assets/creme-brulee-480.webp",
+    "width": 480,
+    "height": 480,
+    "bytes": 10546
+  },
+  {
+    "source": "source/CC104-finalproj-main/Lemonade.png",
+    "output": "/assets/lemonade-960.webp",
+    "width": 960,
+    "height": 960,
+    "bytes": 11732
+  },
+  {
+    "source": "source/CC104-finalproj-main/Lemonade.png",
+    "output": "/assets/lemonade-480.webp",
+    "width": 480,
+    "height": 480,
+    "bytes": 4738
+  },
+  {
+    "source": "source/CC104-finalproj-main/Thé glacé(iced tea).png",
+    "output": "/assets/the-glace-iced-tea-960.webp",
+    "width": 960,
+    "height": 960,
+    "bytes": 23062
+  },
+  {
+    "source": "source/CC104-finalproj-main/Thé glacé(iced tea).png",
+    "output": "/assets/the-glace-iced-tea-480.webp",
+    "width": 480,
+    "height": 480,
+    "bytes": 8952
+  },
+  {
+    "source": "source/CC104-finalproj-main/fresh buko.png",
+    "output": "/assets/fresh-buko-960.webp",
+    "width": 960,
+    "height": 960,
+    "bytes": 47532
+  },
+  {
+    "source": "source/CC104-finalproj-main/fresh buko.png",
+    "output": "/assets/fresh-buko-480.webp",
+    "width": 480,
+    "height": 480,
+    "bytes": 17742
+  },
+  {
+    "source": "source/CC104-finalproj-main/calamansi juice.png",
+    "output": "/assets/calamansi-juice-960.webp",
+    "width": 960,
+    "height": 960,
+    "bytes": 16520
+  },
+  {
+    "source": "source/CC104-finalproj-main/calamansi juice.png",
+    "output": "/assets/calamansi-juice-480.webp",
+    "width": 480,
+    "height": 480,
+    "bytes": 6848
+  },
+  {
+    "source": "design/design-directions/assets/creme-brulee.jpg",
+    "output": "/assets/editorial-creme-brulee.webp",
+    "width": 1200,
+    "height": 1200,
+    "bytes": 32508
+  },
+  {
+    "source": "design/design-directions/assets/dining-room.jpg",
+    "output": "/assets/editorial-dining-room.webp",
+    "width": 1024,
+    "height": 554,
+    "bytes": 131168
+  },
+  {
+    "source": "design/design-directions/assets/lobster.jpg",
+    "output": "/assets/editorial-lobster.webp",
+    "width": 1200,
+    "height": 1200,
+    "bytes": 191980
+  },
+  {
+    "source": "design/design-directions/assets/restaurant.jpg",
+    "output": "/assets/editorial-restaurant.webp",
+    "width": 1200,
+    "height": 800,
+    "bytes": 111716
+  },
+  {
+    "source": "design/design-directions/assets/steak.jpg",
+    "output": "/assets/editorial-steak.webp",
+    "width": 1200,
+    "height": 1200,
+    "bytes": 105538
+  }
+]
