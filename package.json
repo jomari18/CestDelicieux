@@ -1,0 +1,48 @@
+{
+  "name": "cest-delicieux",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5180",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 5181",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run tests/unit tests/edge",
+    "test:unit": "vitest run tests/unit",
+    "test:edge": "vitest run tests/edge",
+    "test:db": "node tools/test-db.mjs",
+    "test:browser": "node tools/browser-audit.mjs",
+    "check:assets": "node tools/check-assets.mjs",
+    "check:bundle": "node tools/check-bundle.mjs",
+    "android:sync": "cap sync android",
+    "android:build": "node tools/build-android.mjs"
+  },
+  "dependencies": {
+    "@capacitor/android": "8.5.3",
+    "@capacitor/app": "8.1.2",
+    "@capacitor/core": "8.5.3",
+    "@capacitor/geolocation": "8.2.3",
+    "@supabase/supabase-js": "2.117.3",
+    "leaflet": "1.9.4",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-router-dom": "7.18.4"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "8.5.3",
+    "@types/leaflet": "1.9.22",
+    "@types/node": "26.6.5",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.1.2",
+    "pg": "8.23.1",
+    "supabase": "2.120.0",
+    "typescript": "7.0.2",
+    "vite": "8.3.4",
+    "vitest": "5.0.3"
+  }
+}
