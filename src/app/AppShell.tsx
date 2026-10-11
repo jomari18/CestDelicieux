@@ -1,0 +1,10 @@
+import {useEffect,useState} from 'react';
+import {Link,NavLink,Outlet,useLocation} from 'react-router-dom';
+import {Icon} from '../components/Icon';
+import {useAuth} from '../features/auth/AuthProvider';
+import {signOut} from '../features/auth/api';
+import {StatusNotice} from '../components/StatusNotice';
+export function AppShell(){const auth=useAuth(),location=useLocation();const [menu,setMenu]=useState(false),[error,setError]=useState('');useEffect(()=>{setMenu(false)},[location.pathname]);
+ async function logout(){const result=await signOut();if(!result.ok)setError(result.message)}
+ return <><a className="skip-link" href="#main-content">Skip to content</a><header className="site-header"><div className="header-inner"><Link to="/" className="brand">C’est Délicieux<span>ATMOSPHERIC SUPPER CLUB</span></Link><button className="mobile-menu-toggle icon-button" onClick={()=>setMenu(!menu)} aria-label={menu?'Close navigation':'Open navigation'} aria-expanded={menu}><Icon name={menu?'close':'menu'}/></button><nav aria-label="Main navigation" className={menu?'main-nav is-open':'main-nav'}><NavLink to="/menu">Menu</NavLink><Link to="/#our-story">The restaurant</Link><Link to="/#contact">Contact</Link>{auth.session?<><NavLink to="/orders">My orders</NavLink>{auth.staff&&<NavLink to="/staff/orders">Staff</NavLink>}<NavLink to="/profile" aria-label="Your account"><Icon name="user"/></NavLink><button className="nav-link" onClick={logout}>Sign out</button></>:<NavLink to="/auth">Sign in</NavLink>}</nav><Link to="/cart" className="header-bag" aria-label="Open your order"><Icon name="bag"/><span>Your order</span></Link></div></header><StatusNotice message={error} error/><main id="main-content"><Outlet/></main><footer className="site-footer page-width"><Link to="/" className="brand">C’est Délicieux<span>GOOD COMPANY. EXTRAORDINARY FLAVOUR.</span></Link><div><Link to="/menu">Our menu</Link><Link to="/orders">Your orders</Link><Link to="/#contact">Contact</Link></div><p>Portfolio demonstration · Prices in PHP · Philippine time<br/>Demo pickup point — Metro Manila</p></footer></>
+}
