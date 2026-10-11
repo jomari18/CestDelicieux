@@ -1,0 +1,18 @@
+project_id = "cest-delicieux"
+[api]
+port = 54331
+schemas = ["public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+[db]
+port = 54332
+major_version = 17
+[auth]
+enabled = true
+site_url = "http://127.0.0.1:5180"
+additional_redirect_urls = ["http://localhost:5180", "http://localhost"]
+[auth.email]
+enable_signup = true
+enable_confirmations = true
+[functions.delivery-quote]
+verify_jwt = true

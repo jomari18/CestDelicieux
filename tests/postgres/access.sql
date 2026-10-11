@@ -1,0 +1,13 @@
+begin;
+set local role anon;
+select public.test_assert((select count(*)=25 from public.products),'public unique seed catalogue');
+select public.test_assert((select count(*)=5 from public.categories),'public categories');
+select public.test_assert((public.get_my_access()->'data'->>'staff')::boolean=false,'anon not staff');
+reset role;
+select set_config('request.jwt.claim.sub','10000000-0000-4000-8000-000000000001',true);
+set local role authenticated;
+select public.test_assert((select count(*)=1 from public.profiles),'owner profile only');
+select public.test_assert((public.get_my_access()->'data'->>'staff')::boolean=false,'metadata forgery not staff');
+select public.test_assert(not has_table_privilege('authenticated','restaurant_private.delivery_quotes','select'),'private quotes not browser readable');
+select public.test_assert(not has_function_privilege('authenticated','public.store_delivery_quote(jsonb)','execute'),'quote creation service-only');
+rollback;
