@@ -1,6 +1,6 @@
 # C’est Délicieux — React, Supabase and Android conversion
 
-Date: 11 October 2026. Status: written design for owner review, not implemented.
+Date: 11 October 2026. Status: approved by owner; implementation plan prepared, not implemented.
 
 ## Intent and accepted requirements
 
