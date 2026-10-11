@@ -31,7 +31,7 @@ Pickup: pending → accepted → preparing → ready → completed. Delivery: pe
 
 Use only the dedicated restaurant project `xjcmygnnbkdnetkdsfyq`. The owner has run the schema/seed setup, and a read-only public API check returned all 25 products. See [Supabase setup](docs/supabase-setup.md), [delivery setup](docs/delivery-setup.md), [staff grant](docs/staff-access.sql), [database contract](docs/database-contracts.md) and [hosted verification](docs/hosted-verification.md).
 
-**Live delivery still requires deploying the `delivery-quote` function and configuring an OpenRouteService key in that project’s Edge secrets.** Local route fixtures prove behavior but do not prove a live provider route. There is no fabricated estimate fallback.
+**The `delivery-quote` function is deployed and ACTIVE with JWT verification enabled.** The owner reported saving `ORS_API_KEY`; local-origin CORS preflight passed. An authenticated live provider route still needs verification. Local route fixtures do not prove a live provider route. There is no fabricated estimate fallback.
 
 ## Checks
 

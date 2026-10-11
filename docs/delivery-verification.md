@@ -1,5 +1,9 @@
 # Delivery verification — 12 October 2026
 
+## Hosted setup follow-up
+
+The owner ran the read-only setup inventory in the dedicated hosted project and provided a screenshot showing all three groups OK (foundation26/26, staff/contact22/22, transactional orders14/14). This confirms expected table/RLS and function presence, not full function definitions or grants. The owner reported saving `ORS_API_KEY`. After the owner completed CLI login, `delivery-quote` was deployed from the correct project directory to `xjcmygnnbkdnetkdsfyq`: version1, ACTIVE, `verify_jwt=true`. A read-only local-origin OPTIONS request returned204 and the matching CORS origin. No SQL, account, delivery quote or order was created during this deployment check. Authenticated live ORS routing and checkout remain unverified.
+
 The implemented source is on local branch `codex/restaurant-conversion`. It has not been pushed, merged into another repository, published to web hosting or released to an app store.
 
 Verified:
