@@ -1,5 +1,6 @@
 import {it,expect} from 'vitest';
 import {handleQuote,type QuoteDependencies} from '../../supabase/functions/delivery-quote/handler';
+import {getRoadDistance} from '../../supabase/functions/delivery-quote/provider';
 const reservation={id:'reservation',origin:{lat:14.5995,lng:120.9842},destination:{lat:14.61,lng:120.99},settingsVersion:1,maxDistanceMetres:25000};
 function dependencies(overrides:Partial<QuoteDependencies>={}):QuoteDependencies{return {origins:['http://127.0.0.1:5180'],configured:true,verifyUser:async()=>({id:'owner',verified:true}),reserve:async()=>({ok:true,data:reservation}),route:async()=>4000,store:async(id,distance)=>({ok:true,data:{id,destination:reservation.destination,distanceMetres:distance,feeCentavos:6000,settingsVersion:1,issuedAt:'2026-10-11T00:00:00Z',expiresAt:'2026-10-11T00:05:00Z'}}),...overrides}}
 const request=(destination:unknown={lat:14.61,lng:120.99})=>new Request('http://test/delivery-quote',{method:'POST',headers:{origin:'http://127.0.0.1:5180',Authorization:'Bearer test-user-token','content-type':'application/json'},body:JSON.stringify({destination})});
@@ -13,3 +14,24 @@ it.each([NaN,Infinity,-1,25001])('rejects invalid/outside road distance %s',asyn
 it('redacts provider failures and offers retry',async()=>{const result=await handleQuote(request(),dependencies({route:async()=>{throw Error('secret-provider-key')}}));expect(result.status).toBe(503);expect(JSON.stringify(await result.json())).not.toContain('secret-provider-key')});
 it('uses trusted reservation and propagates policy change',async()=>{const result=await handleQuote(request(),dependencies({store:async()=>({ok:false,code:'POLICY_CHANGED',message:'Refresh'})}));expect(result.status).toBe(409)});
 it('returns stored quote based on provider metres',async()=>{const result=await handleQuote(request(),dependencies());const body=await result.json();expect(result.status).toBe(200);expect(body.data.distanceMetres).toBe(4000);expect(body.data.feeCentavos).toBe(6000)});
+
+it.each([401,403])('identifies provider authentication failure %s without exposing secrets',async status=>{
+ const reports:unknown[]=[];
+ const result=await handleQuote(request(),dependencies({
+  route:async()=>getRoadDistance(reservation,'private-key',async()=>new Response('private-provider-body',{status})),
+  reportFailure:details=>reports.push(details)
+ }));
+ expect(await result.json()).toMatchObject({ok:false,code:'ROUTING_CREDENTIALS_INVALID'});
+ expect(reports).toEqual([{stage:'routing',providerStatus:status}]);
+ expect(JSON.stringify(reports)).not.toContain('private-key');
+});
+it('identifies routing quota and preserves the retry/pickup path',async()=>{
+ const result=await handleQuote(request(),dependencies({route:async()=>getRoadDistance(reservation,'private-key',async()=>new Response('{}',{status:429}))}));
+ expect(await result.json()).toMatchObject({ok:false,code:'ROUTING_RATE_LIMITED'});
+});
+it('reports a failed storage stage without exposing the underlying error',async()=>{
+ const reports:unknown[]=[];
+ const result=await handleQuote(request(),dependencies({store:async()=>{throw Error('secret-storage-detail')},reportFailure:details=>reports.push(details)}));
+ expect(reports).toEqual([{stage:'storage',providerStatus:undefined}]);
+ expect(JSON.stringify(await result.json())).not.toContain('secret-storage-detail');
+});

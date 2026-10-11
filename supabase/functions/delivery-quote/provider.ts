@@ -1,4 +1,10 @@
 import type { Reservation } from "./handler.ts";
+export class RoutingProviderError extends Error {
+  constructor(readonly status: number) {
+    super("Route provider unavailable");
+    this.name = "RoutingProviderError";
+  }
+}
 export async function getRoadDistance(
   reservation: Reservation,
   key: string,
@@ -18,7 +24,7 @@ export async function getRoadDistance(
       signal: AbortSignal.timeout(10000),
     },
   );
-  if (!response.ok) throw Error("Route provider unavailable");
+  if (!response.ok) throw new RoutingProviderError(response.status);
   const body = await response.json();
   const distance = body?.routes?.[0]?.summary?.distance;
   if (

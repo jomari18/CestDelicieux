@@ -1,6 +1,7 @@
 import type {ApiResult,Coordinates,DeliveryQuote} from '../../../src/domain/contracts.ts';
+import {RoutingProviderError} from './provider.ts';
 export type Reservation={id:string;origin:Coordinates;destination:Coordinates;settingsVersion:number;maxDistanceMetres:number};
-export type QuoteDependencies={origins:string[];configured:boolean;verifyUser:(token:string)=>Promise<{id:string;verified:boolean}|null>;reserve:(ownerId:string,destination:Coordinates)=>Promise<ApiResult<Reservation>>;route:(reservation:Reservation)=>Promise<number>;store:(reservationId:string,distanceMetres:number)=>Promise<ApiResult<DeliveryQuote>>};
+export type QuoteDependencies={origins:string[];configured:boolean;verifyUser:(token:string)=>Promise<{id:string;verified:boolean}|null>;reserve:(ownerId:string,destination:Coordinates)=>Promise<ApiResult<Reservation>>;route:(reservation:Reservation)=>Promise<number>;store:(reservationId:string,distanceMetres:number)=>Promise<ApiResult<DeliveryQuote>>;reportFailure?:(details:{stage:string;providerStatus?:number})=>void};
 export async function handleQuote(request:Request,deps:QuoteDependencies):Promise<Response>{
  const origin=request.headers.get('origin');const allowed=!origin||deps.origins.includes(origin);
  const headers:Record<string,string>={'content-type':'application/json','cache-control':'no-store','vary':'Origin','access-control-allow-headers':'authorization, apikey, content-type, x-client-info','access-control-allow-methods':'POST, OPTIONS'};
@@ -11,6 +12,7 @@ export async function handleQuote(request:Request,deps:QuoteDependencies):Promis
  if(request.method==='OPTIONS')return new Response(null,{status:204,headers});
  if(request.method!=='POST')return fail(405,'METHOD_NOT_ALLOWED','Use POST.');
  const auth=request.headers.get('authorization');if(!auth?.startsWith('Bearer ')||auth.startsWith('Bearer sb_'))return fail(401,'AUTH_REQUIRED','Sign in to estimate delivery.');
+ let stage='authentication';
  try{
   const user=await deps.verifyUser(auth.slice(7));if(!user)return fail(401,'AUTH_REQUIRED','Sign in again to estimate delivery.');
   if(!user.verified)return fail(403,'VERIFICATION_REQUIRED','Verify your email before checkout.');
@@ -19,10 +21,19 @@ export async function handleQuote(request:Request,deps:QuoteDependencies):Promis
   const destination=body?.destination;
   if(typeof destination?.lat!=='number'||typeof destination?.lng!=='number'||!Number.isFinite(destination.lat)||!Number.isFinite(destination.lng)||Math.abs(destination.lat)>90||Math.abs(destination.lng)>180)return fail(400,'INVALID_DESTINATION','Choose a valid delivery pin.');
   if(!deps.configured)return fail(503,'ROUTING_UNAVAILABLE','Delivery estimates are unavailable. Retry later or choose pickup.');
+  stage='reservation';
   const reservation=await deps.reserve(user.id,destination);
   if(!reservation.ok)return reply(reservation.code==='RATE_LIMITED'?429:409,reservation);
+  stage='routing';
   const distance=await deps.route(reservation.data);
   if(!Number.isFinite(distance)||distance<0||distance>reservation.data.maxDistanceMetres)return fail(422,'OUTSIDE_COVERAGE','No valid road route within delivery coverage. Correct your pin or choose pickup.');
+  stage='storage';
   const quote=await deps.store(reservation.data.id,distance);return reply(quote.ok?200:409,quote);
- }catch{return fail(503,'ROUTING_UNAVAILABLE','The road estimate could not be loaded. Retry or choose pickup.');}
+ }catch(error){
+  const providerStatus=error instanceof RoutingProviderError?error.status:undefined;
+  deps.reportFailure?.({stage,providerStatus});
+  if(stage==='routing'&&(providerStatus===401||providerStatus===403))return fail(503,'ROUTING_CREDENTIALS_INVALID','The routing service rejected its credentials or access. Delivery setup needs attention; choose pickup for now.');
+  if(stage==='routing'&&providerStatus===429)return fail(503,'ROUTING_RATE_LIMITED','The routing service has reached its request limit. Retry later or choose pickup.');
+  return fail(503,'ROUTING_UNAVAILABLE','The road estimate could not be loaded. Retry or choose pickup.');
+ }
 }

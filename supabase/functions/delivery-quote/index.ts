@@ -11,6 +11,7 @@ Deno.serve(async request=>{
  const client=createClient(url,publicKey,{auth:{persistSession:false,autoRefreshToken:false}});
  const service=createClient(url,serviceKey,{auth:{persistSession:false,autoRefreshToken:false}});
  return handleQuote(request,{origins,configured:!!(providerKey&&url&&serviceKey),
+  reportFailure:details=>console.error(JSON.stringify({event:'delivery_quote_failed',...details})),
   verifyUser:async token=>{const {data,error}=await client.auth.getUser(token);return error||!data.user?null:{id:data.user.id,verified:!!data.user.email_confirmed_at&&!data.user.is_anonymous}},
   reserve:async(ownerId,destination)=>{const {data,error}=await service.rpc('reserve_quote_request',{p_request:{ownerId,destination}});if(error)throw Error('Quote reservation failed');return data},
   route:reservation=>getRoadDistance(reservation,providerKey),

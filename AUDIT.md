@@ -67,3 +67,9 @@ The most capable reviewer attempted the fresh review but stopped at an account u
 Post-fix unit/Edge suite: **59 tests passed** across 12 files. Typecheck, production build, optimized assets (55 / 2.99 MB), actual bundle probe and public bundle guard passed. The final full PostgreSQL/browser/APK checks are recorded in the delivery verification document. No second code review was dispatched after fixes.
 
 Real public browser checks also verified all 25 hosted menu products, decoded images at desktop/mobile widths, offline feedback, and zero uncaught page errors or failed Supabase requests, with **zero hosted writes**. Screenshots: `live-landing-1440.png`, `live-landing-390.png`, `live-menu-1440.png`, `live-menu-390.png`.
+
+## Live delivery diagnostic follow-up — 12 October 2026
+
+The owner reported a live manual-pin estimate failing with `ROUTING_UNAVAILABLE`, alongside optional device-location failure. Read-only hosted checks confirmed service-role schema/function privileges and two recent quote reservations but no stored quotes. This narrows the live failure to routing/storage; it does not prove an invalid ORS key. Secret-name/digest listing confirmed `ORS_API_KEY` exists without retrieving its value.
+
+The generic server catch concealed the failed stage and provider status (Medium diagnostic issue). Eight regressions first failed, then passed after adding redacted stage/status reporting and distinct routing-credentials/access and quota messages. Provider bodies, keys, addresses, coordinates and tokens are not logged or sent back in errors. Unknown failures retain the original retry/pickup response. All67 unit/Edge tests and the production build passed. Function version2 is ACTIVE with JWT verification still enabled. No hosted SQL, accounts or orders were changed; the owner must retry the authenticated estimate to identify the underlying live failure.

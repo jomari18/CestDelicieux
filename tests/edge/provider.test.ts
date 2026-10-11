@@ -48,3 +48,8 @@ it("rejects a quota error without treating it as a free route", async () =>
       async () => new Response("{}", { status: 429 }),
     ),
   ).rejects.toThrow());
+
+it.each([401,403,429,500])("retains only safe provider HTTP status %s for diagnostics", async status => {
+  await expect(getRoadDistance(reservation, "private-key", async () => new Response("private-provider-body", { status })))
+    .rejects.toMatchObject({ status, message: "Route provider unavailable" });
+});
