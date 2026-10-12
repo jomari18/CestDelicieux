@@ -138,6 +138,11 @@ export function AuthPage() {
             {signup ? "Create account" : "Sign in"}
           </Button>
         </form>
+        {!signup && (
+          <Link className="text-link" to="/forgot-password">
+            Forgot password?
+          </Link>
+        )}
         <p className="auth-switch">
           {signup ? "Already registered?" : "New to C’est Délicieux?"}{" "}
           <Link to={signup ? "/auth" : "/auth?mode=register"}>

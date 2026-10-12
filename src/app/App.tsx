@@ -4,6 +4,7 @@ import { AuthProvider } from "../features/auth/AuthProvider";
 import { AuthPage } from "../features/auth/AuthPage";
 import { VerifyPage } from "../features/auth/VerifyPage";
 import { ProfilePage } from "../features/auth/ProfilePage";
+import { RecoveryPage } from "../features/auth/RecoveryPage";
 import { AppShell } from "./AppShell";
 import { CatalogProvider } from "../features/catalog/CatalogProvider";
 import { CartProvider } from "../features/cart/CartProvider";
@@ -99,6 +100,7 @@ export default function App() {
                   <Route path="/stories/:slug" element={<StoryPage />} />
                   <Route path="/auth" element={<AuthPage />} />
                   <Route path="/verify" element={<VerifyPage />} />
+                  <Route path="/forgot-password" element={<RecoveryPage />} />
                   <Route path="/profile" element={<ProfilePage />} />
                   <Route path="/staff" element={<StaffShell />}>
                     <Route path="orders" element={<StaffOrdersPage />} />
