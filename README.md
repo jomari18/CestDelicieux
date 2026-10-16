@@ -29,6 +29,22 @@ Open http://127.0.0.1:5180. `npm.cmd run build` produces `dist`; `npm.cmd run pr
 
 Pickup: pending → accepted → preparing → ready → completed. Delivery: pending → accepted → preparing → ready → out for delivery → delivered. Staff can reject pending orders or cancel pending/accepted orders. Membership is checked in the database, not editable user metadata.
 
+## System design
+
+These diagrams were drawn from the app's actual database schema, roles and code paths.
+
+**Context diagram.** C’est Délicieux as a single process, and the people and outside services it exchanges data with.
+
+![C’est Délicieux context diagram](docs/diagrams/context-diagram.png)
+
+**Data flow diagram (Level 1).** The main processes, the data stores they read and write (grouped from the database tables), and the data that moves between them.
+
+![C’est Délicieux data flow diagram](docs/diagrams/data-flow-diagram.png)
+
+**Flowchart: checkout and order lifecycle.** The main workflow step by step, including decisions and error paths.
+
+![C’est Délicieux flowchart](docs/diagrams/flowchart.png)
+
 ## Supabase and delivery
 
 Use only the dedicated restaurant project `xjcmygnnbkdnetkdsfyq`. The owner has run the schema/seed setup, and a read-only public API check returned all 25 products. See [Supabase setup](docs/supabase-setup.md), [delivery setup](docs/delivery-setup.md), [staff grant](docs/staff-access.sql), [database contract](docs/database-contracts.md) and [hosted verification](docs/hosted-verification.md).
