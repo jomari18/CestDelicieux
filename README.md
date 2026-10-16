@@ -1,33 +1,23 @@
 # C’est Délicieux
 
-React + TypeScript restaurant ordering app, Supabase PostgreSQL/Auth and a Capacitor Android app. The selected **Atmospheric Supper Club** design uses charcoal, cream, burgundy, serif headings and original restaurant photography.
+**Restaurant Ordering System (Web & Android)**
 
-Live web app: [cestdelicieux.netlify.app](https://cestdelicieux.netlify.app/). Netlify deploys the GitHub `main` branch. See [deployment verification](docs/deployment-verification.md).
+C’est Délicieux is a restaurant ordering app with a 25-dish menu, a persistent cart, pickup or delivery with road-distance fees, and pay-on-receipt orders. Restaurant staff manage orders, the menu, delivery pricing, and customer messages from a separate workspace. It runs on the web and as an Android app.
 
-## Run the web app
+## Live Demo
 
-Node 24+, Windows PowerShell:
+**[Open C’est Délicieux](https://cestdelicieux.netlify.app/)**
 
-```powershell
-npm.cmd ci
-Copy-Item .env.example .env.local
-# Set the dedicated restaurant URL and publishable key in .env.local.
-npm.cmd run dev
-```
+## Highlights
 
-Open http://127.0.0.1:5180. `npm.cmd run build` produces `dist`; `npm.cmd run preview` uses port 5181. Netlify settings and SPA fallback are included. Set the same two **public** Vite variables in hosting before building. No service-role key or routing provider key belongs in Vite, the APK, or Git.
-
-## Features
-
-- 25 original menu products, five categories, search and a persistent anonymous cart (30 distinct dishes, 1–99 each).
-- Registration, email verification/code resend, sign in, profile and account-isolated private data.
-- Pickup or delivery, PHP and pay on receipt. Demo pickup origin in Metro Manila; no actual restaurant address is claimed.
-- Explicit delivery pin confirmation; optional device location with a manual map/coordinate alternative. Road routing is server-side, initially ₱15/km, minimum ₱50, up to 25km. Fees round upward to whole pesos; quotes expire after five minutes.
-- Transactional order placement, current prices/availability, immutable order snapshots, identical-request retries, safe interrupted-order recovery, history and pending cancellation.
-- Staff order progress, separate receipt collection, audited changes, menu/category editing, delivery settings and contact inbox.
-- Responsive navigation, 44px controls, keyboard dialogs, reduced motion and Android safe-area/back/offline handling. Orders are never queued for offline submission.
-
-Pickup: pending → accepted → preparing → ready → completed. Delivery: pending → accepted → preparing → ready → out for delivery → delivered. Staff can reject pending orders or cancel pending/accepted orders. Membership is checked in the database, not editable user metadata.
+- 25 original menu dishes in five categories, with search and a persistent cart
+- Registration, email verification and code resend, sign-in, and profile
+- Pickup or delivery: confirm a map pin, then get a road-distance quote (₱15/km, ₱50 minimum, up to 25 km)
+- Transactional order placement with current prices, price snapshots, and safe retries
+- Order history, live status, and cancellation while pending
+- Staff workspace for order progress, payment collection, menu editing, delivery settings, and the contact inbox
+- Android app built with Capacitor, with safe-area, Back button, and offline handling
+- Responsive navigation, 44 px controls, keyboard dialogs, and reduced motion
 
 ## System design
 
@@ -45,30 +35,51 @@ These diagrams were drawn from the app's actual database schema, roles and code 
 
 ![C’est Délicieux flowchart](docs/diagrams/flowchart.png)
 
-## Supabase and delivery
+## Tech Stack
 
-Use only the dedicated restaurant project `xjcmygnnbkdnetkdsfyq`. The owner has run the schema/seed setup, and a read-only public API check returned all 25 products. See [Supabase setup](docs/supabase-setup.md), [delivery setup](docs/delivery-setup.md), [staff grant](docs/staff-access.sql), [database contract](docs/database-contracts.md) and [hosted verification](docs/hosted-verification.md).
+- React, TypeScript, Vite, React Router
+- Supabase Auth, PostgreSQL, Row Level Security, RPC functions, and Edge Functions
+- OpenRouteService for road distance (called server-side)
+- Leaflet with OpenStreetMap tiles
+- Capacitor for Android
+- Vitest
+- Netlify
 
-**The `delivery-quote` function is deployed and ACTIVE with JWT verification enabled.** The owner confirmed live road quotes and a persisted delivery order on the local web app. The deployed Netlify origin passes CORS preflight. Authenticated ordering on the deployed site and actual Android device behavior remain separate verification steps. There is no fabricated estimate fallback.
+## Security Design
 
-## Checks
+Staff membership is checked in the database, not in editable user metadata. Orders are placed in one transaction that re-checks prices and availability and records immutable snapshots; repeated requests with the same ID are safe. The `delivery-quote` Edge Function requires a signed-in user, keeps the routing key as a server secret, and is rate-limited. Private tables live in a separate schema that the public API cannot reach.
 
-```powershell
-npm.cmd test
-npm.cmd run typecheck
-npm.cmd run build
-npm.cmd run check:assets
-npm.cmd run check:bundle
+> Only the Supabase project URL and publishable key are bundled. A bundle check (`npm run check:bundle`) fails the build if a secret key, local path, or development server URL is found. Service-role keys and routing keys must never be committed to this repository.
+
+## Database
+
+SQL migrations are in [`supabase/migrations/`](supabase/migrations/), with seed data in `supabase/seed.sql` and the delivery function in `supabase/functions/delivery-quote/`. Setup guides: [Supabase setup](docs/supabase-setup.md), [delivery setup](docs/delivery-setup.md), [database contracts](docs/database-contracts.md), and [staff access](docs/staff-access.sql).
+
+## Local Use
+
+Use Node.js 24 or later.
+
+```sh
+npm ci
+cp .env.example .env.local   # set the Supabase URL and publishable key
+npm run dev
 ```
 
-Real database tests require PostgreSQL installed locally. `tools/start-test-db.ps1` starts the separate disposable test cluster on 127.0.0.1:55434. `npm.cmd run test:db` resets only `cestdelicieux_test` and uses synthetic Auth fixtures. **Never run its bootstrap/fixtures in a hosted project.**
-
-Browser regression tests use the installed Playwright CLI, not another browser runner. Start the dev server and `node tools/browser-fixture-server.mjs` in separate terminals, then open a CLI session named `cest-audit` and run `npm.cmd run test:browser`. See [browser fixtures](tests/browser/fixtures.md). The fixture server binds to loopback only and is not imported by the application.
+Open http://127.0.0.1:5180. `npm run build` creates `dist`.
 
 ## Android
 
-App ID `com.jomaricandido.cestdelicieux`, API 24+, target API36. The app bundles `dist`; there is no development server URL. See [Android setup](docs/android-setup.md) for the verified JDK/SDK and reproducible debug build. Artifacts are in `outputs/`. A debug APK is for testing; Play Store signing/publication is separate.
+App ID `com.jomaricandido.cestdelicieux`, Android 7.0 (API 24) and later. The app bundles `dist` and does not load a development server. See [Android setup](docs/android-setup.md).
 
-## Deliverables and evidence
+## Testing
 
-[Audit](AUDIT.md), [source mapping](docs/source-mapping.md), [release checklist](docs/release-checklist.md). Photography and menu are imported from the supplied source ZIP and optimized as WebP. The journal retains original text and labels the app as a demonstration. The original supplied project was static HTML/JS; no existing database was present to migrate.
+`npm test` runs 79 automated unit and Edge Function tests. `npm run test:db` runs real database tests against a disposable local PostgreSQL cluster, and `npm run test:browser` runs Playwright CLI regression checks. `npm run typecheck`, `npm run check:assets`, and `npm run check:bundle` complete the release checks. See the [audit](AUDIT.md) and [release checklist](docs/release-checklist.md).
+
+## Author
+
+**Jomari M. Candido**
+Sole Software Developer
+
+## Project Status
+
+Portfolio release — live on Netlify and deployed from this repository. The pickup point is a demo location in Metro Manila; no real restaurant address is claimed.
